@@ -11,6 +11,18 @@ class RealProxy implements IProxy {
   });
 
   @override
+  Future login(String username, String password) {
+    // TODO: implement login
+    return null;
+  }
+
+  @override
+  Future signUp(String username, String password, String email) {
+    // TODO: implement signUp
+    return null;
+  }
+
+  @override
   Future getInfoForDate(DateTime date) async {
     // TODO: implement getInfoForTimePeriod
   }

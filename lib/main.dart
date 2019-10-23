@@ -7,6 +7,9 @@ import 'package:time_budget/viewmodels/bloc.dart';
 import 'package:time_budget/views/auth.dart';
 import 'package:time_budget/views/main.dart';
 
+/// TODO Temporary
+const LOGGED_IN = false;
+
 void main() => runApp(TimeBudgetApp());
 
 class TimeBudgetApp extends StatelessWidget {
@@ -23,6 +26,9 @@ class TimeBudgetApp extends StatelessWidget {
         BlocProvider<MainBloc>(
           builder: (context) => MainBloc(),
         ),
+        BlocProvider<AuthBloc>(
+          builder: (context) => AuthBloc(),
+        ),
       ],
       child: BlocProvider<ThemeBloc>(
         builder: (context) => ThemeBloc(),
@@ -33,7 +39,8 @@ class TimeBudgetApp extends StatelessWidget {
               title: 'Time Budget',
               theme: theme,
               routes: <String, WidgetBuilder>{
-                '/': (BuildContext context) => AuthView(),
+                '/': (BuildContext context) =>
+                    LOGGED_IN ? MainView() : AuthView(),
               },
             );
           },

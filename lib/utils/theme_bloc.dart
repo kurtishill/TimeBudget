@@ -9,7 +9,8 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeData> {
 
   var theme = ThemeData(
     primarySwatch: Colors.green,
-    primaryColorLight: Colors.green[200],
+    primaryColorLight: Colors.green[300],
+    primaryColorDark: Colors.green[900],
     accentColor: Colors.orange,
     brightness: Brightness.light,
   );
@@ -27,7 +28,8 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeData> {
 
         this.theme = ThemeData(
           primarySwatch: Colors.green,
-          primaryColorLight: Colors.green[200],
+          primaryColorLight: Colors.green[300],
+          primaryColorDark: Colors.green[900],
           accentColor: Colors.orange,
           brightness: this.brightness ? Brightness.light : Brightness.dark,
         );
