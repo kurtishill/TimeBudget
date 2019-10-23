@@ -4,6 +4,7 @@ import 'package:time_budget/proxy/factory/mock_proxy_factory.dart';
 import 'package:time_budget/proxy/factory/proxy_factory.dart';
 import 'package:time_budget/utils/theme_bloc.dart';
 import 'package:time_budget/viewmodels/bloc.dart';
+import 'package:time_budget/views/auth.dart';
 import 'package:time_budget/views/main.dart';
 
 void main() => runApp(TimeBudgetApp());
@@ -31,7 +32,9 @@ class TimeBudgetApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               title: 'Time Budget',
               theme: theme,
-              home: MainView(),
+              routes: <String, WidgetBuilder>{
+                '/': (BuildContext context) => AuthView(),
+              },
             );
           },
         ),
