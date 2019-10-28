@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:time_budget/models/category.dart';
+import 'package:time_budget/utils/date.dart';
 import 'package:time_budget/views/category.dart';
 
 class CategoryListItem extends StatelessWidget {
@@ -8,7 +8,6 @@ class CategoryListItem extends StatelessWidget {
 
   CategoryListItem({@required this.category});
 
-  final DateFormat dateFormat = DateFormat("h 'hours' m 'minutes'");
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -20,7 +19,7 @@ class CategoryListItem extends StatelessWidget {
         category.name,
       ),
       subtitle: Text(
-        dateFormat.format(category.timeForEventsToDateTime()),
+        DateUtils.toHoursAndMinutes(category.amountOfTimeToDateTime()),
       ),
       onTap: () {
         Navigator.push(

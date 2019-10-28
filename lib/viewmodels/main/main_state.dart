@@ -11,17 +11,45 @@ abstract class MainState extends Equatable {
 
 class InitialMainState extends MainState {}
 
-class LoadingMainState extends MainState {}
+class TimeMainState extends MainState {
+  final DateTime startTime;
+  final DateTime endTime;
 
-class LoadedMainState extends MainState {
-  final DateTime date;
-  final List<tbCategory.Category> categories;
-
-  LoadedMainState({
-    @required this.date,
-    this.categories,
+  TimeMainState({
+    @required this.startTime,
+    @required this.endTime,
   });
 
   @override
-  List<Object> get props => [date, categories];
+  List<Object> get props => [startTime, endTime];
+}
+
+class LoadingMainState extends TimeMainState {
+  final DateTime startTime;
+  final DateTime endTime;
+
+  LoadingMainState({
+    @required this.startTime,
+    @required this.endTime,
+  });
+
+  @override
+  List<Object> get props => [startTime, endTime];
+}
+
+class LoadedMainState extends TimeMainState {
+  final DateTime startTime;
+  final DateTime endTime;
+  final List<tbCategory.Category> categories;
+  final int totalSeconds;
+
+  LoadedMainState({
+    @required this.startTime,
+    @required this.endTime,
+    this.categories,
+    this.totalSeconds,
+  }) : super(startTime: startTime, endTime: endTime);
+
+  @override
+  List<Object> get props => [startTime, endTime, categories];
 }

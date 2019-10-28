@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:time_budget/models/category.dart';
+import 'package:time_budget/utils/date.dart';
 import 'package:time_budget/viewmodels/main/main_bloc.dart';
 import 'package:time_budget/viewmodels/main/main_event.dart';
 import 'package:time_budget/viewmodels/main/main_state.dart';
@@ -19,28 +19,48 @@ class _MainViewState extends State<MainView> {
   @override
   void initState() {
     _mainBloc = BlocProvider.of<MainBloc>(context);
-    _mainBloc.add(ChangeDateMainEvent(newDate: DateTime.now()));
+    final now = DateTime.now();
+    _mainBloc.add(
+      ChangeTimePeriodMainEvent(
+        startTime: DateTime(now.year, now.month, now.day, 0, 0),
+        endTime: DateTime(now.year, now.month, now.day, 23, 59),
+      ),
+    );
     super.initState();
   }
 
   bool _isSameDate(DateTime dt1, DateTime dt2) {
+    if (dt1 == null || dt2 == null) {
+      return false;
+    }
     return dt1.year == dt2.year && dt1.day == dt2.day && dt1.month == dt2.month;
   }
 
-  Future _chooseDate(BuildContext context, DateTime startDate) async {
-    DateTime initialDate = startDate ?? DateTime.now();
+  Future _chooseDate({
+    @required BuildContext context,
+    @required DateTime dateToChange,
+    @required DateTime startTime,
+    @required DateTime endTime,
+  }) async {
+    DateTime initialDate = dateToChange ?? DateTime.now();
 
     final result = await showDatePicker(
           context: context,
           initialDate: initialDate,
-          firstDate: DateTime.now().subtract(Duration(days: 1200)),
-          lastDate: DateTime.now().add(Duration(days: 1200)),
+          firstDate: dateToChange.compareTo(endTime) == 0
+              ? startTime
+              : DateTime.now().subtract(Duration(days: 1200)),
+          lastDate: dateToChange.compareTo(startTime) == 0
+              ? endTime
+              : DateTime.now().add(Duration(days: 1200)),
         ) ??
-        startDate;
+        dateToChange;
 
-    if (!_isSameDate(startDate, result)) {
-      _mainBloc.add(ChangeDateMainEvent(newDate: result));
+    if (_isSameDate(dateToChange, result)) {
+      return null;
     }
+
+    return result;
   }
 
   PreferredSizeWidget _buildAppBar() {
@@ -58,59 +78,193 @@ class _MainViewState extends State<MainView> {
     );
   }
 
-  Widget _buildDateSelectionRow(BuildContext context, DateTime date) {
+  Widget _buildDateSelectionRow(
+    BuildContext context,
+    DateTime startTime,
+    DateTime endTime,
+    bool loading,
+  ) {
+    final innerArrowsEnabled = startTime == null || endTime == null
+        ? false
+        : !loading && !_isSameDate(startTime, endTime);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Spacer(),
-        IconButton(
-          icon: Icon(
-            Icons.keyboard_arrow_left,
-            color: Colors.grey,
-            size: 40,
-          ),
-          onPressed: date != null
-              ? () {
-                  _mainBloc.add(
-                    ChangeDateMainEvent(
-                      newDate: date.subtract(
-                        Duration(days: 1),
-                      ),
-                    ),
-                  );
-                }
-              : null,
-        ),
-        Spacer(),
-        GestureDetector(
-          child: Text(
-            date != null ? DateFormat.yMMMd().format(date) : '',
-            style: TextStyle(
-              fontSize: 17,
-              color: Colors.grey,
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.keyboard_arrow_left,
+                color: Colors.grey,
+                size: 30,
+              ),
+              onPressed: !loading
+                  ? () {
+                      _mainBloc.add(
+                        ChangeTimePeriodMainEvent(
+                          startTime: startTime.subtract(
+                            Duration(days: 1),
+                          ),
+                          endTime: endTime,
+                        ),
+                      );
+                    }
+                  : null,
             ),
-          ),
-          onTap: () => _chooseDate(context, date),
-        ),
-        Spacer(),
-        IconButton(
-          icon: Icon(
-            Icons.keyboard_arrow_right,
-            color: Colors.grey,
-            size: 40,
-          ),
-          onPressed: date != null
-              ? () {
-                  _mainBloc.add(
-                    ChangeDateMainEvent(
-                      newDate: date.add(
-                        Duration(days: 1),
-                      ),
+            GestureDetector(
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    startTime != null ? DateUtils.toyMMMdString(startTime) : '',
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width * 0.04,
+                      color: Colors.grey[700],
                     ),
-                  );
-                }
-              : null,
+                  ),
+                  Text(
+                    startTime != null ? DateUtils.toClockTime(startTime) : '',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey,
+                    ),
+                  )
+                ],
+              ),
+              onTap: !loading
+                  ? () async {
+                      final DateTime newDate = await _chooseDate(
+                        context: context,
+                        dateToChange: startTime,
+                        startTime: startTime,
+                        endTime: endTime,
+                      );
+                      if (newDate != null) {
+                        final newStartTime = DateTime(
+                            newDate.year, newDate.month, newDate.day, 0, 0);
+                        _mainBloc.add(
+                          ChangeTimePeriodMainEvent(
+                            startTime: newStartTime,
+                            endTime: endTime,
+                          ),
+                        );
+                      }
+                    }
+                  : null,
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.keyboard_arrow_right,
+                color: !_isSameDate(startTime, endTime)
+                    ? Colors.grey
+                    : Colors.grey[350],
+                size: 30,
+              ),
+              onPressed: innerArrowsEnabled
+                  ? () {
+                      _mainBloc.add(
+                        ChangeTimePeriodMainEvent(
+                          startTime: startTime.add(
+                            Duration(days: 1),
+                          ),
+                          endTime: endTime,
+                        ),
+                      );
+                    }
+                  : null,
+            ),
+          ],
+        ),
+        Text('-'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.keyboard_arrow_left,
+                color: !_isSameDate(startTime, endTime)
+                    ? Colors.grey
+                    : Colors.grey[350],
+                size: 30,
+              ),
+              onPressed: innerArrowsEnabled
+                  ? () {
+                      _mainBloc.add(
+                        ChangeTimePeriodMainEvent(
+                          startTime: startTime,
+                          endTime: endTime.subtract(
+                            Duration(days: 1),
+                          ),
+                        ),
+                      );
+                    }
+                  : null,
+            ),
+            GestureDetector(
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    endTime != null ? DateUtils.toyMMMdString(endTime) : '',
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width * 0.04,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                  Text(
+                    endTime != null ? DateUtils.toClockTime(endTime) : '',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey,
+                    ),
+                  )
+                ],
+              ),
+              onTap: !loading
+                  ? () async {
+                      final newDate = await _chooseDate(
+                        context: context,
+                        dateToChange: endTime,
+                        startTime: startTime,
+                        endTime: endTime,
+                      );
+                      if (newDate != null) {
+                        final newEndTime = DateTime(
+                            newDate.year, newDate.month, newDate.day, 23, 59);
+                        _mainBloc.add(
+                          ChangeTimePeriodMainEvent(
+                            startTime: startTime,
+                            endTime: newEndTime,
+                          ),
+                        );
+                      }
+                    }
+                  : null,
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.keyboard_arrow_right,
+                color: Colors.grey,
+                size: 30,
+              ),
+              onPressed: !loading
+                  ? () {
+                      _mainBloc.add(
+                        ChangeTimePeriodMainEvent(
+                          startTime: startTime,
+                          endTime: endTime.add(
+                            Duration(days: 1),
+                          ),
+                        ),
+                      );
+                    }
+                  : null,
+            ),
+          ],
         ),
         Spacer(),
       ],
@@ -127,16 +281,21 @@ class _MainViewState extends State<MainView> {
       painter: PercentageRing(
         categories: categories,
         radius: radius,
+        timePeriodLengthInSeconds: seconds,
       ),
       child: child,
     );
   }
 
-  Widget _buildSummaryRow(int numActivities, int seconds) {
-    double percent = seconds / 86400 * 100;
-    String percentString = percent.floor() == percent
-        ? percent.toStringAsFixed(0)
-        : percent.toStringAsFixed(1);
+  Widget _buildSummaryRow(int numActivities, int seconds, double percent) {
+    String percentString;
+    if (percent == null) {
+      percentString = '0';
+    } else {
+      percentString = percent.floor() == percent
+          ? percent.toStringAsFixed(0)
+          : percent.toStringAsFixed(1);
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,13 +397,21 @@ class _MainViewState extends State<MainView> {
 
   Widget _buildPageContent({
     @required BuildContext context,
-    @required DateTime date,
+    @required DateTime startTime,
+    @required DateTime endTime,
     @required double ringRadius,
     @required List<Category> categories,
     @required int seconds,
     @required bool loading,
   }) {
-    final hours = seconds / 3600;
+    double hours;
+    int startToEndTime;
+    double percent;
+    if (startTime != null && endTime != null) {
+      hours = seconds / 3600;
+      startToEndTime = endTime.difference(startTime).inSeconds;
+      percent = seconds / startToEndTime * 100;
+    }
     return Container(
       width: double.infinity,
       child: SingleChildScrollView(
@@ -255,7 +422,7 @@ class _MainViewState extends State<MainView> {
             SizedBox(
               height: 30.0,
             ),
-            _buildDateSelectionRow(context, date),
+            _buildDateSelectionRow(context, startTime, endTime, loading),
             SizedBox(
               height: 60.0,
             ),
@@ -265,7 +432,7 @@ class _MainViewState extends State<MainView> {
               child: _buildPercentageRing(
                 categories: categories,
                 radius: ringRadius,
-                seconds: seconds,
+                seconds: startToEndTime,
                 child: loading
                     ? Container(
                         child: CircularProgressIndicator(),
@@ -283,7 +450,7 @@ class _MainViewState extends State<MainView> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 60.0),
-              child: _buildSummaryRow(categories.length, seconds),
+              child: _buildSummaryRow(categories.length, seconds, percent),
             ),
             SizedBox(
               height: 20,
@@ -303,11 +470,6 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     final double ringRadius = MediaQuery.of(context).size.width / 4;
 
-    final totalSecondsForDay = _mainBloc.categories.fold(
-      0,
-      (t, c) => t + c.totalTimeForEventsToSeconds(),
-    );
-
     return Scaffold(
       appBar: _buildAppBar(),
       body: BlocBuilder(
@@ -315,10 +477,11 @@ class _MainViewState extends State<MainView> {
         builder: (context, state) {
           return _buildPageContent(
             context: context,
-            date: state is LoadedMainState ? state.date : null,
+            startTime: state is TimeMainState ? state.startTime : null,
+            endTime: state is TimeMainState ? state.endTime : null,
             ringRadius: ringRadius,
             categories: state is LoadedMainState ? state.categories : [],
-            seconds: state is LoadedMainState ? totalSecondsForDay : 0,
+            seconds: state is LoadedMainState ? state.totalSeconds : 0,
             loading: state is LoadingMainState,
           );
         },

@@ -71,7 +71,7 @@ class _AuthViewState extends State<AuthView> with TickerProviderStateMixin {
     _buttonAnimationController = AnimationController(
       vsync: this,
       duration: Duration(
-        milliseconds: 350,
+        milliseconds: 250,
       ),
     );
 
@@ -124,6 +124,7 @@ class _AuthViewState extends State<AuthView> with TickerProviderStateMixin {
     _authBloc.close();
     _themeBloc.close();
     _authStateAnimationController.dispose();
+    _buttonAnimationController.dispose();
     _passwordTextFieldFocusNode.dispose();
     _emailTextFieldFocusNode.dispose();
     super.dispose();

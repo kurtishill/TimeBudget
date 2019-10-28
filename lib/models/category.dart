@@ -6,18 +6,24 @@ import 'package:time_budget/models/event.dart';
 class Category {
   final String id;
   final String name;
+  final int amountOfTime;
   final List<Event> events;
   final Color color;
 
   Category({
     @required this.id,
     @required this.name,
-    @required this.events,
+    this.amountOfTime,
+    this.events,
     @required this.color,
   });
 
   DateTime timeForEventsToDateTime() {
     return DateTime(0, 0, 0, 0, 0, totalTimeForEventsToSeconds());
+  }
+
+  DateTime amountOfTimeToDateTime() {
+    return DateTime(0, 0, 0, 0, 0, amountOfTime);
   }
 
   int totalTimeForEventsToSeconds() {

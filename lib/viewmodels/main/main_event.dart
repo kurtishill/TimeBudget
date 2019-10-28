@@ -5,11 +5,12 @@ abstract class MainEvent extends Equatable {
   const MainEvent();
 }
 
-class ChangeDateMainEvent extends MainEvent {
-  final DateTime newDate;
+class ChangeTimePeriodMainEvent extends MainEvent {
+  final DateTime startTime;
+  final DateTime endTime;
 
-  ChangeDateMainEvent({@required this.newDate});
+  ChangeTimePeriodMainEvent({@required this.startTime, @required this.endTime});
 
   @override
-  List<Object> get props => [newDate];
+  List<Object> get props => [startTime, endTime];
 }
