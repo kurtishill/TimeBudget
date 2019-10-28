@@ -1,4 +1,5 @@
 import 'package:time_budget/proxy/base_proxy.dart';
+import 'package:time_budget/utils/mock_data.dart';
 
 class MockProxy implements IProxy {
   @override
@@ -14,7 +15,12 @@ class MockProxy implements IProxy {
   }
 
   @override
-  Future getInfoForDate(DateTime date) async {
+  Future getReportForTimePeriod(DateTime startTime, DateTime endTime) async {
     await Future<void>.delayed(Duration(seconds: 2));
+    if (endTime.difference(startTime).inHours > 24) {
+      return MockData().getCategoriesForTwoDays();
+    } else if (endTime.difference(startTime).inDays < 24) {
+      return MockData().getCategoriesForDay();
+    }
   }
 }

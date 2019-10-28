@@ -1,15 +1,15 @@
 import 'package:time_budget/facade/base_server_facade.dart';
-import 'package:time_budget/facade/services/get_info_for_date_service.dart';
+import 'package:time_budget/facade/services/get_report_for_time_period.dart';
 import 'package:time_budget/facade/services/login_service.dart';
 import 'package:time_budget/facade/services/signup_service.dart';
 
 class ServerFacade implements IServerFacade {
-  GetInfoForDateService _getInfoForDateService;
+  GetReportForTimePeriodService _getReportForTimePeriodService;
   LoginService _loginService;
   SignUpService _signUpService;
 
   ServerFacade() {
-    _getInfoForDateService = GetInfoForDateService();
+    _getReportForTimePeriodService = GetReportForTimePeriodService();
     _loginService = LoginService();
     _signUpService = SignUpService();
   }
@@ -25,7 +25,8 @@ class ServerFacade implements IServerFacade {
   }
 
   @override
-  Future getInfoForDate(DateTime date) async {
-    await _getInfoForDateService.getInfoForDate(date);
+  Future getReportForTimePeriod(DateTime startTime, DateTime endTime) async {
+    return await _getReportForTimePeriodService.getReportForTimePeriod(
+        startTime, endTime);
   }
 }

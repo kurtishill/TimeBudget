@@ -23,7 +23,7 @@ class RealProxy implements IProxy {
   }
 
   @override
-  Future getInfoForDate(DateTime date) async {
+  Future getReportForTimePeriod(DateTime startTime, DateTime endTime) async {
     // TODO: implement getInfoForTimePeriod
   }
 }

@@ -8,10 +8,12 @@ import 'package:time_budget/models/category.dart';
 class PercentageRing extends CustomPainter {
   final double radius;
   final List<Category> categories;
+  final int timePeriodLengthInSeconds;
 
   PercentageRing({
     @required this.radius,
     @required this.categories,
+    @required this.timePeriodLengthInSeconds,
   });
 
   @override
@@ -30,13 +32,11 @@ class PercentageRing extends CustomPainter {
       Color color;
 
       if (i < this.categories.length) {
-        percentage = this.categories[i].events.fold(
-              0,
-              (t, e) => t + e.calculatePercentageForTimeWithinADay(),
-            );
+        percentage =
+            this.categories[i].amountOfTime / this.timePeriodLengthInSeconds;
         color = this.categories[i].color;
       } else {
-        percentage = 100.0 - totalPercentage;
+        percentage = 1.0 - totalPercentage;
         color = Colors.grey;
       }
 
