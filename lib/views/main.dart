@@ -19,7 +19,8 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
   MainBloc _mainBloc;
   AnimationController _fabController;
 
-  static const List<IconData> icons = const [ Icons.calendar_today ];
+  static const List<IconData> fabIcons = const [ Icons.calendar_today ];
+  static const List<String> fabTooltips = const [ 'Add Activity' ];
 
   @override
   void initState() {
@@ -399,7 +400,7 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
   Widget _buildFloatingActionButton() {
     return new Column(
       mainAxisSize: MainAxisSize.min,
-      children: new List.generate(icons.length, (int index) {
+      children: new List.generate(fabIcons.length, (int index) {
         Widget child = new Container(
           height: 70.0,
           width: 56.0,
@@ -409,16 +410,43 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
               parent: _fabController,
               curve: new Interval(
                 0.0,
-                1.0 - index / icons.length / 2.0,
+                1.0 - index / fabIcons.length / 2.0,
                 curve: Curves.easeOut
               ),
             ),
-            child: new FloatingActionButton(
-              heroTag: null,
-              backgroundColor: Colors.white,
-              mini: true,
-              child: new Icon(icons[index], color: Colors.amber),
-              onPressed: () {},
+            child: Stack(
+              overflow: Overflow.visible,
+              children: <Widget>[
+                Positioned(
+                  right: 50,
+                  top: 8,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.white,
+                      boxShadow: [
+                        new BoxShadow(
+                          color: Colors.grey,
+                          offset: new Offset(0.0, 5.0),
+                          blurRadius: 7.0,
+                          spreadRadius: -5.0,
+                        )
+                      ]
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(fabTooltips[index]),
+                    ),
+                  ),
+                ),
+                FloatingActionButton(
+                  heroTag: null,
+                  backgroundColor: Colors.white,
+                  mini: true,
+                  child: new Icon(fabIcons[index], color: Colors.amber),
+                  onPressed: () {},
+                ),
+              ],
             ),
           ),
         );
