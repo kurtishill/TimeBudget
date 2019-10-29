@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'dart:math' as math;
 import 'package:time_budget/models/category.dart';
 import 'package:time_budget/utils/date.dart';
 import 'package:time_budget/viewmodels/main/main_bloc.dart';
@@ -13,8 +15,11 @@ class MainView extends StatefulWidget {
   _MainViewState createState() => _MainViewState();
 }
 
-class _MainViewState extends State<MainView> {
+class _MainViewState extends State<MainView> with TickerProviderStateMixin {
   MainBloc _mainBloc;
+  AnimationController _fabController;
+
+  static const List<IconData> icons = const [ Icons.calendar_today ];
 
   @override
   void initState() {
@@ -26,6 +31,12 @@ class _MainViewState extends State<MainView> {
         endTime: DateTime(now.year, now.month, now.day, 23, 59),
       ),
     );
+
+    _fabController = new AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 50)
+    );
+    _fabController.forward();
     super.initState();
   }
 
@@ -386,13 +397,65 @@ class _MainViewState extends State<MainView> {
   }
 
   Widget _buildFloatingActionButton() {
-    return FloatingActionButton(
-      onPressed: () {},
-      child: Icon(
-        Icons.add,
-        color: Colors.white,
-      ),
+    return new Column(
+      mainAxisSize: MainAxisSize.min,
+      children: new List.generate(icons.length, (int index) {
+        Widget child = new Container(
+          height: 70.0,
+          width: 56.0,
+          alignment: FractionalOffset.topCenter,
+          child: new ScaleTransition(
+            scale: new CurvedAnimation(
+              parent: _fabController,
+              curve: new Interval(
+                0.0,
+                1.0 - index / icons.length / 2.0,
+                curve: Curves.easeOut
+              ),
+            ),
+            child: new FloatingActionButton(
+              heroTag: null,
+              backgroundColor: Colors.white,
+              mini: true,
+              child: new Icon(icons[index], color: Colors.amber),
+              onPressed: () {},
+            ),
+          ),
+        );
+        return child;
+      }).toList()..add(
+        new FloatingActionButton(
+          heroTag: null,
+          child: new AnimatedBuilder(
+            animation: _fabController,
+            builder: (BuildContext context, Widget child) {
+              return new Transform(
+                transform: new Matrix4.rotationZ(_fabController.value * 0.75 * math.pi),
+                alignment: FractionalOffset.center,
+                child: new Icon(
+                    Icons.add,
+                    color: Colors.white,
+                ),
+              );
+            },
+          ),
+          onPressed: () {
+            if (_fabController.isDismissed) {
+              _fabController.forward();
+            } else {
+              _fabController.reverse();
+            }
+          },
+        )
+      )
     );
+//    return FloatingActionButton(
+//      onPressed: () {},
+//      child: Icon(
+//        Icons.add,
+//        color: Colors.white,
+//      ),
+//    );
   }
 
   Widget _buildPageContent({
