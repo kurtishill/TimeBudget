@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'dart:math' as math;
 import 'package:time_budget/models/category.dart';
 import 'package:time_budget/utils/date.dart';
@@ -19,8 +18,8 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
   MainBloc _mainBloc;
   AnimationController _fabController;
 
-  static const List<IconData> fabIcons = const [ Icons.calendar_today ];
-  static const List<String> fabTooltips = const [ 'Add Activity' ];
+  static const List<IconData> fabIcons = const [Icons.calendar_today];
+  static const List<String> fabTooltips = const ['Add Activity'];
 
   @override
   void initState() {
@@ -35,9 +34,8 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
 
     _fabController = new AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 50)
+      duration: const Duration(milliseconds: 50),
     );
-    _fabController.forward();
     super.initState();
   }
 
@@ -399,84 +397,79 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
 
   Widget _buildFloatingActionButton() {
     return new Column(
-      mainAxisSize: MainAxisSize.min,
-      children: new List.generate(fabIcons.length, (int index) {
-        Widget child = new Container(
-          height: 70.0,
-          width: 56.0,
-          alignment: FractionalOffset.topCenter,
-          child: new ScaleTransition(
-            scale: new CurvedAnimation(
-              parent: _fabController,
-              curve: new Interval(
-                0.0,
-                1.0 - index / fabIcons.length / 2.0,
-                curve: Curves.easeOut
+        mainAxisSize: MainAxisSize.min,
+        children: new List.generate(fabIcons.length, (int index) {
+          Widget child = new Container(
+            height: 70.0,
+            width: 56.0,
+            alignment: FractionalOffset.topCenter,
+            child: new ScaleTransition(
+              scale: new CurvedAnimation(
+                parent: _fabController,
+                curve: new Interval(0.0, 1.0 - index / fabIcons.length / 2.0,
+                    curve: Curves.easeOut),
               ),
-            ),
-            child: Stack(
-              overflow: Overflow.visible,
-              children: <Widget>[
-                Positioned(
-                  right: 50,
-                  top: 8,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Colors.white,
-                      boxShadow: [
-                        new BoxShadow(
-                          color: Colors.grey,
-                          offset: new Offset(0.0, 5.0),
-                          blurRadius: 7.0,
-                          spreadRadius: -5.0,
-                        )
-                      ]
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(fabTooltips[index]),
+              child: Stack(
+                overflow: Overflow.visible,
+                children: <Widget>[
+                  Positioned(
+                    right: 50,
+                    top: 8,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.white,
+                          boxShadow: [
+                            new BoxShadow(
+                              color: Colors.grey,
+                              offset: new Offset(0.0, 5.0),
+                              blurRadius: 7.0,
+                              spreadRadius: -5.0,
+                            )
+                          ]),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(fabTooltips[index]),
+                      ),
                     ),
                   ),
-                ),
-                FloatingActionButton(
-                  heroTag: null,
-                  backgroundColor: Colors.white,
-                  mini: true,
-                  child: new Icon(fabIcons[index], color: Colors.amber),
-                  onPressed: () {},
-                ),
-              ],
+                  FloatingActionButton(
+                    heroTag: null,
+                    backgroundColor: Colors.white,
+                    mini: true,
+                    child: new Icon(fabIcons[index], color: Colors.amber),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-        return child;
-      }).toList()..add(
-        new FloatingActionButton(
-          heroTag: null,
-          child: new AnimatedBuilder(
-            animation: _fabController,
-            builder: (BuildContext context, Widget child) {
-              return new Transform(
-                transform: new Matrix4.rotationZ(_fabController.value * 0.75 * math.pi),
-                alignment: FractionalOffset.center,
-                child: new Icon(
+          );
+          return child;
+        }).toList()
+          ..add(new FloatingActionButton(
+            heroTag: null,
+            child: new AnimatedBuilder(
+              animation: _fabController,
+              builder: (BuildContext context, Widget child) {
+                return new Transform(
+                  transform: new Matrix4.rotationZ(
+                      _fabController.value * 0.75 * math.pi),
+                  alignment: FractionalOffset.center,
+                  child: new Icon(
                     Icons.add,
                     color: Colors.white,
-                ),
-              );
+                  ),
+                );
+              },
+            ),
+            onPressed: () {
+              if (_fabController.isDismissed) {
+                _fabController.forward();
+              } else {
+                _fabController.reverse();
+              }
             },
-          ),
-          onPressed: () {
-            if (_fabController.isDismissed) {
-              _fabController.forward();
-            } else {
-              _fabController.reverse();
-            }
-          },
-        )
-      )
-    );
+          )));
 //    return FloatingActionButton(
 //      onPressed: () {},
 //      child: Icon(
