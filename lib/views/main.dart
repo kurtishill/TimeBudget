@@ -397,63 +397,68 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
 
   Widget _buildFloatingActionButton() {
     return new Column(
-        mainAxisSize: MainAxisSize.min,
-        children: new List.generate(fabIcons.length, (int index) {
-          Widget child = new Container(
-            height: 70.0,
-            width: 56.0,
-            alignment: FractionalOffset.topCenter,
-            child: new ScaleTransition(
-              scale: new CurvedAnimation(
-                parent: _fabController,
-                curve: new Interval(0.0, 1.0 - index / fabIcons.length / 2.0,
-                    curve: Curves.easeOut),
-              ),
-              child: Stack(
-                overflow: Overflow.visible,
-                children: <Widget>[
-                  Positioned(
-                    right: 50,
-                    top: 8,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.white,
-                          boxShadow: [
-                            new BoxShadow(
-                              color: Colors.grey,
-                              offset: new Offset(0.0, 5.0),
-                              blurRadius: 7.0,
-                              spreadRadius: -5.0,
-                            )
-                          ]),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(fabTooltips[index]),
-                      ),
-                    ),
-                  ),
-                  FloatingActionButton(
-                    heroTag: null,
-                    backgroundColor: Colors.white,
-                    mini: true,
-                    child: new Icon(fabIcons[index], color: Colors.amber),
-                    onPressed: () {},
-                  ),
-                ],
+      mainAxisSize: MainAxisSize.min,
+      children: new List.generate(fabIcons.length, (int index) {
+        Widget child = new Container(
+          height: 70.0,
+          width: 56.0,
+          alignment: FractionalOffset.topCenter,
+          child: new ScaleTransition(
+            scale: new CurvedAnimation(
+              parent: _fabController,
+              curve: new Interval(
+                0.0,
+                1.0 - index / fabIcons.length / 2.0,
+                curve: Curves.easeOut,
               ),
             ),
-          );
-          return child;
-        }).toList()
-          ..add(new FloatingActionButton(
+            child: Stack(
+              overflow: Overflow.visible,
+              children: <Widget>[
+                Positioned(
+                  right: 50,
+                  top: 8,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.white,
+                        boxShadow: [
+                          new BoxShadow(
+                            color: Colors.grey,
+                            offset: new Offset(0.0, 5.0),
+                            blurRadius: 7.0,
+                            spreadRadius: -5.0,
+                          )
+                        ]),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(fabTooltips[index]),
+                    ),
+                  ),
+                ),
+                FloatingActionButton(
+                  heroTag: null,
+                  backgroundColor: Colors.white,
+                  mini: true,
+                  child: new Icon(fabIcons[index], color: Colors.amber),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
+        );
+        return child;
+      }).toList()
+        ..add(
+          new FloatingActionButton(
             heroTag: null,
             child: new AnimatedBuilder(
               animation: _fabController,
               builder: (BuildContext context, Widget child) {
                 return new Transform(
                   transform: new Matrix4.rotationZ(
-                      _fabController.value * 0.75 * math.pi),
+                    _fabController.value * 0.75 * math.pi,
+                  ),
                   alignment: FractionalOffset.center,
                   child: new Icon(
                     Icons.add,
@@ -469,14 +474,9 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
                 _fabController.reverse();
               }
             },
-          )));
-//    return FloatingActionButton(
-//      onPressed: () {},
-//      child: Icon(
-//        Icons.add,
-//        color: Colors.white,
-//      ),
-//    );
+          ),
+        ),
+    );
   }
 
   Widget _buildPageContent({
