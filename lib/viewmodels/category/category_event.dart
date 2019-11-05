@@ -11,5 +11,20 @@ class DeleteEventCategoryEvent extends CategoryEvent {
   DeleteEventCategoryEvent({@required this.eventId});
 
   @override
-  List<Object> get props => null;
+  List<Object> get props => [eventId];
+}
+
+class FetchEventsCategoryEvent extends CategoryEvent {
+  final String categoryId;
+  final DateTime startTime;
+  final DateTime endTime;
+
+  FetchEventsCategoryEvent({
+    @required this.categoryId,
+    @required this.startTime,
+    @required this.endTime,
+  });
+
+  @override
+  List<Object> get props => [categoryId, startTime, endTime];
 }

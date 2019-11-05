@@ -15,7 +15,17 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     CategoryEvent event,
   ) async* {
     if (event is DeleteEventCategoryEvent) {
-      await _serverFacade.deleteEvent(event.eventId);
+      yield InitialCategoryState();
+      final success = await _serverFacade.deleteEvent(event.eventId);
+      yield EventDeletedCategoryState(success: success);
+    } else if (event is FetchEventsCategoryEvent) {
+      yield LoadingCategoryState();
+      final events = await _serverFacade.fetchEventsForCategory(
+        event.categoryId,
+        event.startTime,
+        event.endTime,
+      );
+      yield EventsLoadedCategoryState(events: events);
     }
   }
 }

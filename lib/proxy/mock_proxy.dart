@@ -1,3 +1,4 @@
+import 'package:time_budget/models/event.dart';
 import 'package:time_budget/proxy/base_proxy.dart';
 import 'package:time_budget/utils/mock_data.dart';
 
@@ -27,5 +28,32 @@ class MockProxy implements IProxy {
   @override
   Future deleteEvent(String eventId) async {
     return await Future.value(true);
+  }
+
+  @override
+  Future fetchEventsForCategory(
+    String categoryId,
+    DateTime startTime,
+    DateTime endTime,
+  ) async {
+    await Future.delayed(Duration(seconds: 1));
+    return <Event>[
+      Event(
+        id: '',
+        name: 'Event A',
+        start: DateTime.now(),
+        end: DateTime.now().add(
+          Duration(hours: 7),
+        ),
+      ),
+      Event(
+        id: '',
+        name: 'Event B',
+        start: DateTime.now(),
+        end: DateTime.now().add(
+          Duration(hours: 3, minutes: 47),
+        ),
+      ),
+    ];
   }
 }
