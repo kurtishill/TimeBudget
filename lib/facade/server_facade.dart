@@ -1,4 +1,5 @@
 import 'package:time_budget/facade/base_server_facade.dart';
+import 'package:time_budget/facade/services/delete_event_service.dart';
 import 'package:time_budget/facade/services/get_report_for_time_period.dart';
 import 'package:time_budget/facade/services/login_service.dart';
 import 'package:time_budget/facade/services/signup_service.dart';
@@ -7,11 +8,20 @@ class ServerFacade implements IServerFacade {
   GetReportForTimePeriodService _getReportForTimePeriodService;
   LoginService _loginService;
   SignUpService _signUpService;
+  DeleteEventService _deleteEventService;
 
-  ServerFacade() {
+  /// singleton boilerplate
+  static final IServerFacade _instance = ServerFacade._internal();
+
+  factory ServerFacade() {
+    return _instance;
+  }
+
+  ServerFacade._internal() {
     _getReportForTimePeriodService = GetReportForTimePeriodService();
     _loginService = LoginService();
     _signUpService = SignUpService();
+    _deleteEventService = DeleteEventService();
   }
 
   @override
@@ -28,5 +38,10 @@ class ServerFacade implements IServerFacade {
   Future getReportForTimePeriod(DateTime startTime, DateTime endTime) async {
     return await _getReportForTimePeriodService.getReportForTimePeriod(
         startTime, endTime);
+  }
+
+  @override
+  Future deleteEvent(String eventId) async {
+    return await _deleteEventService.deleteEvent(eventId);
   }
 }

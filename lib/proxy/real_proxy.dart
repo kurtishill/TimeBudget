@@ -26,4 +26,10 @@ class RealProxy implements IProxy {
   Future getReportForTimePeriod(DateTime startTime, DateTime endTime) async {
     // TODO: implement getInfoForTimePeriod
   }
+
+  @override
+  Future deleteEvent(String eventId) {
+    // TODO: implement deleteEvent
+    return null;
+  }
 }

@@ -5,7 +5,7 @@ import 'package:time_budget/facade/server_facade.dart';
 import '../bloc.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {
-  final IServerFacade serverFacade = ServerFacade();
+  final IServerFacade _serverFacade = ServerFacade();
 
   @override
   MainState get initialState => InitialMainState();
@@ -22,9 +22,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
       // make call to facade right here
       // get and set new categories
-      final categories = await this
-          .serverFacade
-          .getReportForTimePeriod(event.startTime, event.endTime);
+      final categories = await _serverFacade.getReportForTimePeriod(
+          event.startTime, event.endTime);
 
       final totalSecondsForTimePeriod =
           categories.fold(0, (t, c) => t + c.amountOfTime);

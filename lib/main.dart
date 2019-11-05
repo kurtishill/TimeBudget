@@ -29,6 +29,9 @@ class TimeBudgetApp extends StatelessWidget {
         BlocProvider<AuthBloc>(
           builder: (context) => AuthBloc(),
         ),
+        BlocProvider<CategoryBloc>(
+          builder: (context) => CategoryBloc(),
+        ),
       ],
       child: BlocProvider<ThemeBloc>(
         builder: (context) => ThemeBloc(),

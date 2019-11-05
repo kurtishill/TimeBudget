@@ -23,4 +23,9 @@ class MockProxy implements IProxy {
       return MockData().getCategoriesForDay();
     }
   }
+
+  @override
+  Future deleteEvent(String eventId) async {
+    return await Future.value(true);
+  }
 }
