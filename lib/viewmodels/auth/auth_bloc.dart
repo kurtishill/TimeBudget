@@ -6,7 +6,7 @@ import 'package:time_budget/utils/auth_mode.dart';
 import '../bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final IServerFacade serverFacade = ServerFacade();
+  final IServerFacade _serverFacade = ServerFacade();
 
   @override
   AuthState get initialState => InitialAuthState();
@@ -22,12 +22,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final String password = event.data['password'];
       String email = '';
 
+
       if (event.authMode == AuthMode.LOGIN) {
         await serverFacade.login(username, password);
         yield AuthenticatedAuthState();
       } else if (event.authMode == AuthMode.SIGNUP) {
         email = event.data['email'];
-        await serverFacade.signUp(username, password, email);
+        await _serverFacade.signUp(username, password, email);
         yield AuthenticatedAuthState();
       }
     }

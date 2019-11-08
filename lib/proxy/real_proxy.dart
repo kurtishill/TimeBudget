@@ -42,4 +42,17 @@ class RealProxy implements IProxy {
     //   headers: {'Authentication': token},
     // );
   }
+
+  @override
+  Future deleteEvent(String eventId) {
+    // TODO: implement deleteEvent
+    return null;
+  }
+
+  @override
+  Future fetchEventsForCategory(
+      String categoryId, DateTime startTime, DateTime endTime) {
+    // TODO: implement fetchEventsForCategory
+    return null;
+  }
 }
