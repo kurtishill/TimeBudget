@@ -5,7 +5,7 @@
 import 'package:time_budget/serialization/encodable.dart';
 
 class DeleteEventRequest extends Encodable {
-  final String eventID;
+  final int eventID;
 
   DeleteEventRequest({
     this.eventID,

@@ -44,17 +44,20 @@ class ServerFacade implements IServerFacade {
   }
 
   @override
-  Future deleteEvent(String eventId) async {
+  Future deleteEvent(int eventId) async {
     return await _deleteEventService.deleteEvent(eventId);
   }
 
   @override
   Future fetchEventsForCategory(
-    String categoryId,
+    int categoryId,
     DateTime startTime,
     DateTime endTime,
   ) async {
     return await _fetchEventsForCategoryService.fetchEventForCategory(
-        categoryId, startTime, endTime);
+      categoryId,
+      startTime,
+      endTime,
+    );
   }
 }

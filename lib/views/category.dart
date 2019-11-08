@@ -90,7 +90,7 @@ class _CategoryViewState extends State<CategoryView> {
     );
   }
 
-  void _deleteEvent(String eventId) {
+  void _deleteEvent(int eventId) {
     _categoryBloc.add(
       DeleteEventCategoryEvent(eventId: eventId),
     );

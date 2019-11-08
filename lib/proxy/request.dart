@@ -1,3 +1,4 @@
+import 'package:time_budget/responses/basic_response.dart';
 import 'package:time_budget/serialization/decodable.dart';
 import 'package:time_budget/serialization/encodable.dart';
 
@@ -36,13 +37,16 @@ class Request {
         );
       }
 
-      // TODO do something else here?
+      Decodable responseObject;
       if (response.statusCode != 200) {
-        return null;
+        responseObject = Decodable.create(U).fromRawJson("\"success\": false");
+      } else {
+        if (response.contentLength == 0) {
+          responseObject = Decodable.create(U).fromRawJson("\"success\": true");
+        } else {
+          responseObject = Decodable.create(U).fromRawJson(response.body);
+        }
       }
-
-      final Decodable responseObject =
-          Decodable.create(U).fromRawJson(response.body);
 
       return responseObject;
     } catch (e) {

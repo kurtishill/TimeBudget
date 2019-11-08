@@ -2,6 +2,8 @@ import 'package:time_budget/models/event.dart';
 import 'package:time_budget/proxy/base_proxy.dart';
 import 'package:time_budget/requests/auth/login_request.dart';
 import 'package:time_budget/requests/auth/register_request.dart';
+import 'package:time_budget/requests/events/delete_event_request.dart';
+import 'package:time_budget/requests/events/event_list_request.dart';
 import 'package:time_budget/requests/report/get_metrics_request.dart';
 import 'package:time_budget/responses/auth_response.dart';
 import 'package:time_budget/utils/mock_data.dart';
@@ -33,20 +35,16 @@ class MockProxy implements IProxy {
   }
 
   @override
-  Future deleteEvent(String eventId) async {
+  Future deleteEvent(DeleteEventRequest request) async {
     return await Future.value(true);
   }
 
   @override
-  Future fetchEventsForCategory(
-    String categoryId,
-    DateTime startTime,
-    DateTime endTime,
-  ) async {
+  Future fetchEventsForCategory(EventListRequest request) async {
     await Future.delayed(Duration(seconds: 1));
     return <Event>[
       Event(
-        id: '',
+        id: 0,
         name: 'Event A',
         start: DateTime.now(),
         end: DateTime.now().add(
@@ -54,7 +52,7 @@ class MockProxy implements IProxy {
         ),
       ),
       Event(
-        id: '',
+        id: 0,
         name: 'Event B',
         start: DateTime.now(),
         end: DateTime.now().add(

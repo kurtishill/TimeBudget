@@ -3,8 +3,11 @@ import 'package:time_budget/proxy/base_proxy.dart';
 import 'package:time_budget/proxy/request.dart';
 import 'package:time_budget/requests/auth/login_request.dart';
 import 'package:time_budget/requests/auth/register_request.dart';
+import 'package:time_budget/requests/events/delete_event_request.dart';
+import 'package:time_budget/requests/events/event_list_request.dart';
 import 'package:time_budget/requests/report/get_metrics_request.dart';
 import 'package:time_budget/responses/auth_response.dart';
+import 'package:time_budget/responses/basic_response.dart';
 
 class RealProxy implements IProxy {
   final String ip;
@@ -39,20 +42,27 @@ class RealProxy implements IProxy {
     //   'http://${this.ip}:${this.port}/report/get_time_metrics_all',
     //   'post',
     //   requestBody: request,
-    //   headers: {'Authentication': token},
+    //   headers: {'Authentication': ''},
     // );
   }
 
   @override
-  Future deleteEvent(String eventId) {
-    // TODO: implement deleteEvent
-    return null;
+  Future deleteEvent(DeleteEventRequest request) async {
+    return await Request.send<DeleteEventRequest, BasicResponse>(
+      'http://${this.ip}:${this.port}/event/delete',
+      'post',
+      requestBody: request,
+      headers: {'Authentication': ''},
+    );
   }
 
   @override
-  Future fetchEventsForCategory(
-      String categoryId, DateTime startTime, DateTime endTime) {
-    // TODO: implement fetchEventsForCategory
-    return null;
+  Future fetchEventsForCategory(EventListRequest request) async {
+    return await Request.send<EventListRequest, BasicResponse>(
+      'http://${this.ip}:${this.port}/event/get_list',
+      'post',
+      requestBody: request,
+      headers: {'Authentication': ''},
+    );
   }
 }

@@ -6,7 +6,7 @@ abstract class CategoryEvent extends Equatable {
 }
 
 class DeleteEventCategoryEvent extends CategoryEvent {
-  final String eventId;
+  final int eventId;
 
   DeleteEventCategoryEvent({@required this.eventId});
 
@@ -15,7 +15,7 @@ class DeleteEventCategoryEvent extends CategoryEvent {
 }
 
 class FetchEventsCategoryEvent extends CategoryEvent {
-  final String categoryId;
+  final int categoryId;
   final DateTime startTime;
   final DateTime endTime;
 
