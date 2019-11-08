@@ -22,10 +22,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final String password = event.data['password'];
       String email = '';
 
-      if (event.authMode == AuthMode.SIGNUP) {
+      if (event.authMode == AuthMode.LOGIN) {
         await serverFacade.login(username, password);
         yield AuthenticatedAuthState();
-      } else if (event.authMode == AuthMode.LOGIN) {
+      } else if (event.authMode == AuthMode.SIGNUP) {
         email = event.data['email'];
         await serverFacade.signUp(username, password, email);
         yield AuthenticatedAuthState();
