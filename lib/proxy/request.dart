@@ -1,4 +1,3 @@
-import 'package:time_budget/responses/basic_response.dart';
 import 'package:time_budget/serialization/decodable.dart';
 import 'package:time_budget/serialization/encodable.dart';
 
