@@ -7,8 +7,8 @@ class GetReportForTimePeriodService {
 
   Future getReportForTimePeriod(DateTime startTime, DateTime endTime) async {
     final request = GetMetricsRequest(
-      startAt: startTime.millisecondsSinceEpoch * 1000,
-      endAt: endTime.millisecondsSinceEpoch * 1000,
+      startAt: startTime.millisecondsSinceEpoch ~/ 1000,
+      endAt: endTime.millisecondsSinceEpoch ~/ 1000,
     );
     return await _proxy.getMetricsForTimePeriod(request);
   }
