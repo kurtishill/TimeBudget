@@ -20,7 +20,7 @@ class RealProxy implements IProxy {
     return await Request.send<LoginRequest, AuthResponse>(
       'http://${this.ip}:${this.port}/user/login',
       'post',
-      request,
+      requestBody: request,
     );
   }
 
@@ -29,7 +29,7 @@ class RealProxy implements IProxy {
     return await Request.send<RegisterRequest, AuthResponse>(
       'http://${this.ip}:${this.port}/user/register',
       'post',
-      request,
+      requestBody: request,
     );
   }
 
@@ -38,7 +38,7 @@ class RealProxy implements IProxy {
     // return await Request.send<GetMetricsRequest, >(
     //   'http://${this.ip}:${this.port}/report/get_time_metrics_all',
     //   'post',
-    //   request,
+    //   requestBody: request,
     //   headers: {'Authentication': token},
     // );
   }

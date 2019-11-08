@@ -6,8 +6,8 @@ import 'package:http/http.dart' as http;
 class Request {
   static Future<U> send<T extends Encodable, U extends Decodable>(
     String url,
-    String method,
-    T requestBody, {
+    String method, {
+    T requestBody,
     Map<String, String> headers,
   }) async {
     Function request;
@@ -21,13 +21,22 @@ class Request {
     }
     try {
       String body = requestBody.toRawJson();
-      final http.Response response = await request(
-        url,
-        body: body,
-        headers: headers ?? Map<String, String>(),
-      );
+      http.Response response;
 
-      // TODO do something else?
+      if (method.toLowerCase() == 'get') {
+        response = await request(
+          url,
+          headers: headers ?? Map<String, String>(),
+        );
+      } else {
+        response = await request(
+          url,
+          body: body ?? null,
+          headers: headers ?? Map<String, String>(),
+        );
+      }
+
+      // TODO do something else here?
       if (response.statusCode != 200) {
         return null;
       }
