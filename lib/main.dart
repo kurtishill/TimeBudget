@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_budget/proxy/factory/mock_proxy_factory.dart';
 import 'package:time_budget/proxy/factory/proxy_factory.dart';
+import 'package:time_budget/proxy/factory/real_proxy_factory.dart';
 import 'package:time_budget/utils/theme_bloc.dart';
 import 'package:time_budget/viewmodels/bloc.dart';
 import 'package:time_budget/views/auth.dart';
@@ -16,8 +17,9 @@ void main() => runApp(TimeBudgetApp());
 class TimeBudgetApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Proxy factory configured to use the mock proxy throughout the app
+    /// Proxy factory configured to use the mock proxy throughout the app
     ProxyFactory.configure(MockProxyFactory());
+    // ProxyFactory.configure(RealProxyFactory(ip: '', port: '8080'));
 
     return MultiBlocProvider(
       providers: [
