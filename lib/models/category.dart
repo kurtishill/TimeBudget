@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:time_budget/models/event.dart';
 
 class Category {
-  final String id;
+  final int id;
   final String name;
   final int amountOfTime;
   final List<Event> events;

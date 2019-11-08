@@ -5,9 +5,9 @@
 import 'package:time_budget/serialization/encodable.dart';
 
 class EventListRequest extends Encodable {
-  final String categoryID;
-  final String startAt;
-  final String endAt;
+  final int categoryID;
+  final int startAt;
+  final int endAt;
 
   EventListRequest({
     this.categoryID,

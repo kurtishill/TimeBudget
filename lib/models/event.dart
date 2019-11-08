@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class Event {
-  final String id;
+  final int id;
   final String name;
   final String description;
   final DateTime start;
