@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final loginRequest = loginRequestFromJson(jsonString);
-
 import 'package:time_budget/serialization/encodable.dart';
 
 class LoginRequest extends Encodable {

@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final eventListRequest = eventListRequestFromJson(jsonString);
-
 import 'package:time_budget/serialization/encodable.dart';
 
 class EventListRequest extends Encodable {

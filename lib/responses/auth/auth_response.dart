@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final authResponse = authResponseFromJson(jsonString);
-
 import 'package:time_budget/serialization/decodable.dart';
 
 class AuthResponse extends Decodable {
