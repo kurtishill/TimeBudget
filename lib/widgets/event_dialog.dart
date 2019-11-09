@@ -62,7 +62,13 @@ class EventDialog extends StatelessWidget {
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
-                      onPressed: () => Navigator.of(context).pop(_data),
+                      onPressed: () {
+                        if (!_formKey.currentState.validate()) {
+                          return null;
+                        }
+                        _formKey.currentState.save();
+                        return Navigator.of(context).pop(_data);
+                      },
                     ),
                   ],
                 ),
