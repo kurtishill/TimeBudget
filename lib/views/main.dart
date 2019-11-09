@@ -446,9 +446,7 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
                   onPressed: () async {
                     final data = await showDialog(
                       context: context,
-                      builder: (context) => EventDialog(
-                        onCreateEvent: _createEvent,
-                      ),
+                      builder: (context) => EventDialog(),
                     );
 
                     if (data != null) {

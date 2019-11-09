@@ -2,18 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:time_budget/strings.dart';
 
 class EventDialog extends StatelessWidget {
-  final Function onCreateEvent;
-
   final Map<String, dynamic> _data = {
     'eventName': null,
     'eventDescription': null,
     'startTime': null,
     'endTime': null,
   };
-
-  EventDialog({
-    @required this.onCreateEvent,
-  });
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
