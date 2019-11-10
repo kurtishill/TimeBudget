@@ -1,12 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:time_budget/strings.dart';
+import 'package:intl/intl.dart';
 
 class EventDialog extends StatelessWidget {
   final Map<String, dynamic> _data = {
     'eventName': null,
     'eventDescription': null,
-    'startTime': null,
-    'endTime': null,
+    'startTime': DateTime.now(),
+    'endTime': DateTime.now().add(new Duration(minutes: 15)),
   };
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -42,11 +44,67 @@ class EventDialog extends StatelessWidget {
                       labelText: Strings.description,
                     ),
                     textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 4,
                     onFieldSubmitted: (_) => {},
                     validator: (value) => null,
                     onSaved: (value) {
                       _data['eventDescription'] = value;
                     }),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Container(
+                            height: MediaQuery.of(context).copyWith().size.height / 3,
+                            child: CupertinoDatePicker(
+                              initialDateTime: _data['startTime'],
+                              onDateTimeChanged: (DateTime newStartTime) {
+                                _data['startTime'] = newStartTime;
+                              },
+                              minuteInterval: 1,
+                              mode: CupertinoDatePickerMode.dateAndTime,
+                            ),
+                          );
+                        }
+                    );
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Text('Start Time'),
+                      Spacer(),
+                      Text(DateFormat('EEE, MMM d, yyyy - hh:mm aaa').format(_data['startTime'])),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Container(
+                            height: MediaQuery.of(context).copyWith().size.height / 3,
+                            child: CupertinoDatePicker(
+                              initialDateTime: _data['endTime'],
+                              onDateTimeChanged: (DateTime newEndTime) {
+                                _data['endTime'] = newEndTime;
+                              },
+                              minuteInterval: 1,
+                              mode: CupertinoDatePickerMode.dateAndTime,
+                            ),
+                          );
+                        }
+                    );
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Text('End Time'),
+                      Spacer(),
+                      Text(DateFormat('EEE, MMM d, yyyy - hh:mm aaa').format(_data['endTime'])),
+                    ],
+                  ),
+                ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.end,
