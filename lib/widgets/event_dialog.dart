@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:time_budget/strings.dart';
 import 'package:intl/intl.dart';
 
-class EventDialog extends StatelessWidget {
+class EventDialog extends StatefulWidget {
+  @override
+  _EventDialogState createState() => _EventDialogState();
+}
+
+class _EventDialogState extends State<EventDialog> {
   final Map<String, dynamic> _data = {
     'eventName': null,
     'eventDescription': null,
@@ -53,55 +58,35 @@ class EventDialog extends StatelessWidget {
                     }),
                 GestureDetector(
                   onTap: () {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Container(
-                            height: MediaQuery.of(context).copyWith().size.height / 3,
-                            child: CupertinoDatePicker(
-                              initialDateTime: _data['startTime'],
-                              onDateTimeChanged: (DateTime newStartTime) {
-                                _data['startTime'] = newStartTime;
-                              },
-                              minuteInterval: 1,
-                              mode: CupertinoDatePickerMode.dateAndTime,
-                            ),
-                          );
-                        }
-                    );
+                    _selectDate(
+                        initialDate: _data['startTime'],
+                        onDateTimeChanged: (DateTime newDate) {
+                          _data['startTime'] = newDate;
+                        });
                   },
                   child: Row(
                     children: <Widget>[
                       Text('Start Time'),
                       Spacer(),
-                      Text(DateFormat('EEE, MMM d, yyyy - hh:mm aaa').format(_data['startTime'])),
+                      Text(DateFormat('EEE, MMM d, yyyy - hh:mm aaa')
+                          .format(_data['startTime'])),
                     ],
                   ),
                 ),
                 GestureDetector(
                   onTap: () {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Container(
-                            height: MediaQuery.of(context).copyWith().size.height / 3,
-                            child: CupertinoDatePicker(
-                              initialDateTime: _data['endTime'],
-                              onDateTimeChanged: (DateTime newEndTime) {
-                                _data['endTime'] = newEndTime;
-                              },
-                              minuteInterval: 1,
-                              mode: CupertinoDatePickerMode.dateAndTime,
-                            ),
-                          );
-                        }
-                    );
+                    _selectDate(
+                        initialDate: _data['endTime'],
+                        onDateTimeChanged: (DateTime newDate) {
+                          _data['endTime'] = newDate;
+                        });
                   },
                   child: Row(
                     children: <Widget>[
                       Text('End Time'),
                       Spacer(),
-                      Text(DateFormat('EEE, MMM d, yyyy - hh:mm aaa').format(_data['endTime'])),
+                      Text(DateFormat('EEE, MMM d, yyyy - hh:mm aaa')
+                          .format(_data['endTime'])),
                     ],
                   ),
                 ),
@@ -147,6 +132,30 @@ class EventDialog extends StatelessWidget {
       elevation: 0.0,
       backgroundColor: Colors.transparent,
       child: _buildEventDialog(context),
+    );
+  }
+
+  void _selectDate({
+    @required DateTime initialDate,
+    @required Function onDateTimeChanged,
+  }) async {
+    return await showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).copyWith().size.height / 3,
+          child: CupertinoDatePicker(
+            initialDateTime: initialDate,
+            onDateTimeChanged: (DateTime newEndTime) {
+              setState(
+                () => onDateTimeChanged(newEndTime),
+              );
+            },
+            minuteInterval: 1,
+            mode: CupertinoDatePickerMode.dateAndTime,
+          ),
+        );
+      },
     );
   }
 }
