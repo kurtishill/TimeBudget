@@ -40,33 +40,33 @@ class RealProxy implements IProxy {
 
   @override
   Future<GetMetricsResponse> getMetricsForTimePeriod(
-      GetMetricsRequest request) async {
+      GetMetricsRequest request, String token) async {
     return await Request.send<GetMetricsRequest, GetMetricsResponse>(
       'http://${this.ip}:${this.port}/report/get_time_metrics_all',
       'post',
       requestBody: request,
-      headers: {'Authentication': ''},
+      headers: {'Authentication': token},
     );
   }
 
   @override
-  Future<BasicResponse> deleteEvent(DeleteEventRequest request) async {
+  Future<BasicResponse> deleteEvent(DeleteEventRequest request, String token) async {
     return await Request.send<DeleteEventRequest, BasicResponse>(
       'http://${this.ip}:${this.port}/event/delete',
       'post',
       requestBody: request,
-      headers: {'Authentication': ''},
+      headers: {'Authentication': token},
     );
   }
 
   @override
   Future<EventListResponse> fetchEventsForCategory(
-      EventListRequest request) async {
+      EventListRequest request, String token) async {
     return await Request.send<EventListRequest, EventListResponse>(
       'http://${this.ip}:${this.port}/event/get_list',
       'post',
       requestBody: request,
-      headers: {'Authentication': ''},
+      headers: {'Authentication': token},
     );
   }
 }

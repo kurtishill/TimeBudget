@@ -2,11 +2,14 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:time_budget/facade/base_server_facade.dart';
 import 'package:time_budget/facade/server_facade.dart';
+import 'package:time_budget/responses/auth_response.dart';
+import 'package:time_budget/token/token_state.dart';
 import 'package:time_budget/utils/auth_mode.dart';
 import '../bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final IServerFacade _serverFacade = ServerFacade();
+  TokenState _tokenState = TokenState();
 
   @override
   AuthState get initialState => InitialAuthState();
@@ -23,11 +26,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       String email = '';
 
       if (event.authMode == AuthMode.LOGIN) {
-        await _serverFacade.login(username, password);
+        AuthResponse response = await _serverFacade.login(username, password);
+        _tokenState.setToken(response.token);
+        
         yield AuthenticatedAuthState();
       } else if (event.authMode == AuthMode.SIGNUP) {
         email = event.data['email'];
-        await _serverFacade.signUp(username, password, email);
+        
+        AuthResponse response = await _serverFacade.signUp(username, password, email);
+        _tokenState.setToken(response.token);
+        
         yield AuthenticatedAuthState();
       }
     }

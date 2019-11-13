@@ -4,6 +4,7 @@ import 'package:time_budget/facade/services/fetch_events_for_category_service.da
 import 'package:time_budget/facade/services/get_report_for_time_period.dart';
 import 'package:time_budget/facade/services/login_service.dart';
 import 'package:time_budget/facade/services/signup_service.dart';
+import 'package:time_budget/token/token_state.dart';
 
 class ServerFacade implements IServerFacade {
   GetReportForTimePeriodService _getReportForTimePeriodService;
@@ -11,6 +12,7 @@ class ServerFacade implements IServerFacade {
   SignUpService _signUpService;
   DeleteEventService _deleteEventService;
   FetchEventsForCategoryService _fetchEventsForCategoryService;
+  TokenState _tokenState = TokenState();
 
   /// singleton boilerplate
   static final IServerFacade _instance = ServerFacade._internal();
@@ -40,12 +42,12 @@ class ServerFacade implements IServerFacade {
   @override
   Future getReportForTimePeriod(DateTime startTime, DateTime endTime) async {
     return await _getReportForTimePeriodService.getReportForTimePeriod(
-        startTime, endTime);
+        startTime, endTime, _tokenState.getToken);
   }
 
   @override
   Future deleteEvent(int eventId) async {
-    return await _deleteEventService.deleteEvent(eventId);
+    return await _deleteEventService.deleteEvent(eventId, _tokenState.getToken);
   }
 
   @override
@@ -58,6 +60,7 @@ class ServerFacade implements IServerFacade {
       categoryId,
       startTime,
       endTime,
+      _tokenState.getToken
     );
   }
 }

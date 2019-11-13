@@ -6,7 +6,7 @@ import '../bloc.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final IServerFacade _serverFacade = ServerFacade();
-
+  
   @override
   CategoryState get initialState => InitialCategoryState();
 

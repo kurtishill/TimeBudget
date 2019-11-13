@@ -6,12 +6,12 @@ class FetchEventsForCategoryService {
   final IProxy _proxy = ProxyFactory.proxy;
 
   Future fetchEventForCategory(
-      int categoryId, DateTime startTime, DateTime endTime) async {
+      int categoryId, DateTime startTime, DateTime endTime, String token) async {
     final request = EventListRequest(
       categoryID: categoryId,
       startAt: startTime.millisecondsSinceEpoch ~/ 1000,
       endAt: endTime.millisecondsSinceEpoch ~/ 1000,
     );
-    return await _proxy.fetchEventsForCategory(request);
+    return await _proxy.fetchEventsForCategory(request, token);
   }
 }

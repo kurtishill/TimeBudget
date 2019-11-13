@@ -19,13 +19,13 @@ abstract class IProxy {
 
   /// Gets the metrics for a given time period
   /// Returns a GetMetricsResponse (Map<int, double> report)
-  Future<GetMetricsResponse> getMetricsForTimePeriod(GetMetricsRequest request);
+  Future<GetMetricsResponse> getMetricsForTimePeriod(GetMetricsRequest request, String token);
 
   /// Deletes a given event
   /// Returns a BasicResponse (bool success)
-  Future<BasicResponse> deleteEvent(DeleteEventRequest request);
+  Future<BasicResponse> deleteEvent(DeleteEventRequest request, String token);
 
   /// Gets the events for a specific category
   /// Returns an EventListResponse (List<EventResponse> events)
-  Future<EventListResponse> fetchEventsForCategory(EventListRequest request);
+  Future<EventListResponse> fetchEventsForCategory(EventListRequest request, String token);
 }
