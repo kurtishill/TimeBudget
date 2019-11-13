@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final registerRequest = registerRequestFromJson(jsonString);
-
 import 'package:time_budget/serialization/encodable.dart';
 
 class RegisterRequest extends Encodable {

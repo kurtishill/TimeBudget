@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final getMetricsRequest = getMetricsRequestFromJson(jsonString);
-
 import 'package:time_budget/serialization/encodable.dart';
 
 class GetMetricsRequest extends Encodable {
