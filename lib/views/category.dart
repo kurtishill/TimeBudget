@@ -8,28 +8,33 @@ import 'package:time_budget/widgets/event_list_item.dart';
 class CategoryView extends StatefulWidget {
   static const routeName = '/category';
 
+  final Category category;
+  final DateTime startTime;
+  final DateTime endTime;
+
+  CategoryView({
+    @required this.category,
+    @required this.startTime,
+    @required this.endTime,
+  });
+
   @override
   _CategoryViewState createState() => _CategoryViewState();
 }
 
 class _CategoryViewState extends State<CategoryView> {
-  Category _category;
+  // Category _category;
   CategoryBloc _categoryBloc;
 
   @override
   void didChangeDependencies() {
-    final arguments =
-        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    _category = arguments['category'] as Category;
-    final startTime = arguments['startTime'] as DateTime;
-    final endTime = arguments['endTime'] as DateTime;
     _categoryBloc = BlocProvider.of<CategoryBloc>(context);
 
     _categoryBloc.add(
       FetchEventsCategoryEvent(
-        categoryId: _category.id,
-        startTime: startTime,
-        endTime: endTime,
+        categoryId: widget.category.id,
+        startTime: widget.startTime,
+        endTime: widget.endTime,
       ),
     );
     super.didChangeDependencies();
@@ -49,7 +54,7 @@ class _CategoryViewState extends State<CategoryView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_category.name),
+        title: Text(widget.category.name),
       ),
       body: BlocListener(
         bloc: _categoryBloc,

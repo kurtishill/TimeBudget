@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:time_budget/models/event.dart';
 
 abstract class CategoryEvent extends Equatable {
   const CategoryEvent();
@@ -27,4 +28,13 @@ class FetchEventsCategoryEvent extends CategoryEvent {
 
   @override
   List<Object> get props => [categoryId, startTime, endTime];
+}
+
+class UpdateEventCategoryEvent extends CategoryEvent {
+  final List<Event> events;
+
+  UpdateEventCategoryEvent({@required this.events});
+
+  @override
+  List<Object> get props => [events];
 }

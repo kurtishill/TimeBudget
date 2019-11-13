@@ -1,20 +1,45 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_budget/models/category.dart';
 import 'package:time_budget/proxy/factory/mock_proxy_factory.dart';
 import 'package:time_budget/proxy/factory/proxy_factory.dart';
 import 'package:time_budget/proxy/factory/real_proxy_factory.dart';
+import 'package:time_budget/state/app_state.dart';
+import 'package:time_budget/state/app_state_base.dart';
 import 'package:time_budget/utils/theme_bloc.dart';
 import 'package:time_budget/viewmodels/bloc.dart';
 import 'package:time_budget/views/auth.dart';
 import 'package:time_budget/views/category.dart';
 import 'package:time_budget/views/main.dart';
 
-/// TODO Temporary
-const LOGGED_IN = false;
-
 void main() => runApp(TimeBudgetApp());
 
-class TimeBudgetApp extends StatelessWidget {
+class TimeBudgetApp extends StatefulWidget {
+  @override
+  _TimeBudgetAppState createState() => _TimeBudgetAppState();
+}
+
+class _TimeBudgetAppState extends State<TimeBudgetApp> {
+  // StreamSubscription<User> _authSub;
+  final AppStateBase appState = AppState();
+
+  bool _authenticated = false;
+
+  @override
+  void initState() {
+    appState.onUserChanged.listen((user) {
+      /// Not logged in
+      if (user == null) {
+        setState(() => _authenticated = false);
+      } else if (user != null && user.token.isNotEmpty) {
+        setState(() => _authenticated = true);
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     /// Proxy factory configured to use the mock proxy throughout the app
@@ -32,9 +57,9 @@ class TimeBudgetApp extends StatelessWidget {
         BlocProvider<AuthBloc>(
           builder: (context) => AuthBloc(),
         ),
-        BlocProvider<CategoryBloc>(
-          builder: (context) => CategoryBloc(),
-        ),
+        // BlocProvider<CategoryBloc>(
+        //   builder: (context) => CategoryBloc(),
+        // ),
       ],
       child: BlocBuilder<ThemeBloc, ThemeData>(
         builder: (context, theme) {
@@ -44,8 +69,32 @@ class TimeBudgetApp extends StatelessWidget {
             theme: theme,
             routes: <String, WidgetBuilder>{
               '/': (BuildContext context) =>
-                  LOGGED_IN ? MainView() : AuthView(),
-              CategoryView.routeName: (BuildContext context) => CategoryView(),
+                  _authenticated ? MainView() : AuthView(),
+              // CategoryView.routeName: (BuildContext context) => CategoryView(),
+            },
+            onGenerateRoute: (RouteSettings settings) {
+              switch (settings.name) {
+                case CategoryView.routeName:
+                  final args = settings.arguments as Map<String, dynamic>;
+                  final category = args['category'] as Category;
+                  final categoryId = category.id;
+                  final startTime = args['startTime'] as DateTime;
+                  final endTime = args['endTime'] as DateTime;
+                  return MaterialPageRoute(
+                    builder: (context) => BlocProvider<CategoryBloc>(
+                      builder: (context) => CategoryBloc(categoryId),
+                      child: CategoryView(
+                        category: category,
+                        startTime: startTime,
+                        endTime: endTime,
+                      ),
+                    ),
+                  );
+                default:
+                  return MaterialPageRoute(
+                    builder: (context) => AuthView(),
+                  );
+              }
             },
           );
         },

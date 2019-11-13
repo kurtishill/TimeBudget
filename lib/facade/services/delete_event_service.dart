@@ -7,6 +7,8 @@ class DeleteEventService {
 
   Future deleteEvent(int eventId, String token) async {
     final request = DeleteEventRequest(eventID: eventId);
-    return await _proxy.deleteEvent(request, token);
+    final response = await _proxy.deleteEvent(request, token);
+
+    if (response.success) {}
   }
 }

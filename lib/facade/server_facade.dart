@@ -1,18 +1,19 @@
 import 'package:time_budget/facade/base_server_facade.dart';
 import 'package:time_budget/facade/services/delete_event_service.dart';
 import 'package:time_budget/facade/services/fetch_events_for_category_service.dart';
-import 'package:time_budget/facade/services/get_report_for_time_period.dart';
+import 'package:time_budget/facade/services/get_metrics_for_time_period.dart';
 import 'package:time_budget/facade/services/login_service.dart';
 import 'package:time_budget/facade/services/signup_service.dart';
-import 'package:time_budget/token/token_state.dart';
+import 'package:time_budget/state/app_state.dart';
+import 'package:time_budget/state/app_state_base.dart';
 
 class ServerFacade implements IServerFacade {
-  GetReportForTimePeriodService _getReportForTimePeriodService;
+  GetMetricsForTimePeriodService _getMetricsForTimePeriodService;
   LoginService _loginService;
   SignUpService _signUpService;
   DeleteEventService _deleteEventService;
   FetchEventsForCategoryService _fetchEventsForCategoryService;
-  TokenState _tokenState = TokenState();
+  AppStateBase _appState = AppState();
 
   /// singleton boilerplate
   static final IServerFacade _instance = ServerFacade._internal();
@@ -22,7 +23,7 @@ class ServerFacade implements IServerFacade {
   }
 
   ServerFacade._internal() {
-    _getReportForTimePeriodService = GetReportForTimePeriodService();
+    _getMetricsForTimePeriodService = GetMetricsForTimePeriodService();
     _loginService = LoginService();
     _signUpService = SignUpService();
     _deleteEventService = DeleteEventService();
@@ -40,14 +41,14 @@ class ServerFacade implements IServerFacade {
   }
 
   @override
-  Future getReportForTimePeriod(DateTime startTime, DateTime endTime) async {
-    return await _getReportForTimePeriodService.getReportForTimePeriod(
-        startTime, endTime, _tokenState.getToken);
+  Future getMetricsForTimePeriod(DateTime startTime, DateTime endTime) async {
+    return await _getMetricsForTimePeriodService.getMetricsForTimePeriod(
+        startTime, endTime, _appState.token);
   }
 
   @override
   Future deleteEvent(int eventId) async {
-    return await _deleteEventService.deleteEvent(eventId, _tokenState.getToken);
+    return await _deleteEventService.deleteEvent(eventId, _appState.token);
   }
 
   @override
@@ -60,7 +61,7 @@ class ServerFacade implements IServerFacade {
       categoryId,
       startTime,
       endTime,
-      _tokenState.getToken
+      _appState.token,
     );
   }
 }
