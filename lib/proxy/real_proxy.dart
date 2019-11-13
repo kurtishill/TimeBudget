@@ -6,8 +6,10 @@ import 'package:time_budget/requests/auth/register_request.dart';
 import 'package:time_budget/requests/events/delete_event_request.dart';
 import 'package:time_budget/requests/events/event_list_request.dart';
 import 'package:time_budget/requests/report/get_metrics_request.dart';
-import 'package:time_budget/responses/auth_response.dart';
+import 'package:time_budget/responses/auth/auth_response.dart';
 import 'package:time_budget/responses/basic_response.dart';
+import 'package:time_budget/responses/events/event_list_response.dart';
+import 'package:time_budget/responses/report/get_metrics_response.dart';
 
 class RealProxy implements IProxy {
   final String ip;
@@ -37,17 +39,18 @@ class RealProxy implements IProxy {
   }
 
   @override
-  Future getMetricsForTimePeriod(GetMetricsRequest request) async {
-    // return await Request.send<GetMetricsRequest, >(
-    //   'http://${this.ip}:${this.port}/report/get_time_metrics_all',
-    //   'post',
-    //   requestBody: request,
-    //   headers: {'Authentication': ''},
-    // );
+  Future<GetMetricsResponse> getMetricsForTimePeriod(
+      GetMetricsRequest request) async {
+    return await Request.send<GetMetricsRequest, GetMetricsResponse>(
+      'http://${this.ip}:${this.port}/report/get_time_metrics_all',
+      'post',
+      requestBody: request,
+      headers: {'Authentication': ''},
+    );
   }
 
   @override
-  Future deleteEvent(DeleteEventRequest request) async {
+  Future<BasicResponse> deleteEvent(DeleteEventRequest request) async {
     return await Request.send<DeleteEventRequest, BasicResponse>(
       'http://${this.ip}:${this.port}/event/delete',
       'post',
@@ -57,8 +60,9 @@ class RealProxy implements IProxy {
   }
 
   @override
-  Future fetchEventsForCategory(EventListRequest request) async {
-    return await Request.send<EventListRequest, BasicResponse>(
+  Future<EventListResponse> fetchEventsForCategory(
+      EventListRequest request) async {
+    return await Request.send<EventListRequest, EventListResponse>(
       'http://${this.ip}:${this.port}/event/get_list',
       'post',
       requestBody: request,

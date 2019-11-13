@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final editEventRequest = editEventRequestFromJson(jsonString);
-
 import 'package:time_budget/serialization/encodable.dart';
 
 class EditEventRequest extends Encodable {

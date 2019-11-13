@@ -10,6 +10,10 @@ class GetReportForTimePeriodService {
       startAt: startTime.millisecondsSinceEpoch ~/ 1000,
       endAt: endTime.millisecondsSinceEpoch ~/ 1000,
     );
-    return await _proxy.getMetricsForTimePeriod(request);
+    final list = await _proxy.getMetricsForTimePeriod(request);
+
+    // TODO process the list and get the report information out of it
+
+    return list;
   }
 }
