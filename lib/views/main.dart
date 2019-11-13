@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:math' as math;
 import 'package:time_budget/models/category.dart';
+import 'package:time_budget/models/event.dart';
 import 'package:time_budget/utils/date.dart';
 import 'package:time_budget/viewmodels/main/main_bloc.dart';
 import 'package:time_budget/viewmodels/main/main_event.dart';
 import 'package:time_budget/viewmodels/main/main_state.dart';
 import 'package:time_budget/widgets/category_list_item.dart';
+import 'package:time_budget/widgets/event_dialog.dart';
 import 'package:time_budget/widgets/percentage_ring.dart';
 
 import 'category.dart';
@@ -450,7 +452,16 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
                   backgroundColor: Colors.white,
                   mini: true,
                   child: new Icon(fabIcons[index], color: Colors.amber),
-                  onPressed: () {},
+                  onPressed: () async {
+                    final data = await showDialog(
+                      context: context,
+                      builder: (context) => EventDialog(),
+                    );
+
+                    if (data != null) {
+                      _createEvent(data);
+                    }
+                  },
                 ),
               ],
             ),
@@ -581,6 +592,20 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
       ),
       floatingActionButton: _buildFloatingActionButton(),
     );
+  }
+
+  void _createEvent(Map<String, dynamic> eventData) {
+    _mainBloc.add(
+      AddNewEventMainEvent(
+        newEvent: Event(
+          id: '',
+          name: eventData['eventName'],
+          description: eventData['eventDescription'],
+          start: eventData['startTime'],
+          end: eventData['endTime'],
+        ),
+      ),
+    ),
   }
 
   void _onCategoryTapped(

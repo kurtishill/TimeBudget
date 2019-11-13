@@ -50,5 +50,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         totalSeconds: totalSecondsForTimePeriod,
       );
     }
+    else if (event is AddNewEventMainEvent) {
+
+    }
   }
 }
