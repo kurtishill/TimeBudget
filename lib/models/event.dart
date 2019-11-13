@@ -15,6 +15,20 @@ class Event {
     @required this.end,
   });
 
+  bool operator ==(o) =>
+      o is Event &&
+      this.id == o.id &&
+      this.name == o.name &&
+      this.description == o.description &&
+      this.start == o.start &&
+      this.end == o.end;
+
+  int get hashCode =>
+      31 * this.id +
+      this.name.hashCode +
+      this.start.hashCode +
+      this.end.hashCode;
+
   double calculatePercentageForTimeWithinADay() {
     final range = end.difference(start);
     final percentage = range.inSeconds / 86400;

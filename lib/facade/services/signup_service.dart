@@ -1,3 +1,4 @@
+import 'package:time_budget/models/user.dart';
 import 'package:time_budget/proxy/base_proxy.dart';
 import 'package:time_budget/proxy/factory/proxy_factory.dart';
 import 'package:time_budget/requests/auth/register_request.dart';
@@ -12,7 +13,15 @@ class SignUpService {
       email: email,
     );
 
-    // TODO set user info in AppState or something
-    return _proxy.signUp(request);
+    final response = await _proxy.signUp(request);
+
+    if (response != null) {
+      return User(
+        email: response.email,
+        token: response.token,
+        username: response.username,
+      );
+    }
+    return null;
   }
 }

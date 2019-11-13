@@ -482,15 +482,9 @@ class _AuthViewState extends State<AuthView> with TickerProviderStateMixin {
         child: BlocListener<AuthBloc, AuthState>(
           bloc: _authBloc,
           listener: (context, state) {
-            if (state is AuthenticatedAuthState) {
+            if (state is InitialAuthState) {
               _buttonAnimationController.reverse();
               this._showLoadingIndicator = false;
-              // TODO TEMPORARY
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => MainView(),
-                ),
-              );
             }
           },
           child: BlocBuilder<AuthBloc, AuthState>(
