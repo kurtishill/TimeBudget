@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:time_budget/models/category.dart';
 import 'package:time_budget/utils/date.dart';
-import 'package:time_budget/views/category.dart';
 
 class CategoryListItem extends StatelessWidget {
   final Category category;
+  final DateTime startTime;
+  final DateTime endTime;
+  final Function onTap;
 
-  CategoryListItem({@required this.category});
+  CategoryListItem({
+    @required this.category,
+    @required this.startTime,
+    @required this.endTime,
+    @required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,22 +22,17 @@ class CategoryListItem extends StatelessWidget {
         Icons.more_vert,
         color: Colors.lightGreen,
       ),
-      title: Text(
-        category.name,
-      ),
+      title: Text(category.name),
       subtitle: Text(
-        DateUtils.toHoursAndMinutes(category.amountOfTimeToDateTime()),
+        DateUtils.toHoursAndMinutes(
+          category.amountOfTimeToDateTime(),
+        ),
       ),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CategoryView(
-              category: category,
-            ),
-          ),
-        );
-      },
+      onTap: () => this.onTap(
+        category,
+        startTime,
+        endTime,
+      ),
     );
   }
 }

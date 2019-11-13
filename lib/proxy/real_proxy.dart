@@ -1,5 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:time_budget/proxy/base_proxy.dart';
+import 'package:time_budget/proxy/request.dart';
+import 'package:time_budget/requests/auth/login_request.dart';
+import 'package:time_budget/requests/auth/register_request.dart';
+import 'package:time_budget/requests/events/delete_event_request.dart';
+import 'package:time_budget/requests/events/event_list_request.dart';
+import 'package:time_budget/requests/report/get_metrics_request.dart';
+import 'package:time_budget/responses/auth/auth_response.dart';
+import 'package:time_budget/responses/basic_response.dart';
+import 'package:time_budget/responses/events/event_list_response.dart';
+import 'package:time_budget/responses/report/get_metrics_response.dart';
 
 class RealProxy implements IProxy {
   final String ip;
@@ -11,19 +21,52 @@ class RealProxy implements IProxy {
   });
 
   @override
-  Future login(String username, String password) {
-    // TODO: implement login
-    return null;
+  Future<AuthResponse> login(LoginRequest request) async {
+    return await Request.send<LoginRequest, AuthResponse>(
+      'http://${this.ip}:${this.port}/user/login',
+      'post',
+      requestBody: request,
+    );
   }
 
   @override
-  Future signUp(String username, String password, String email) {
-    // TODO: implement signUp
-    return null;
+  Future<AuthResponse> signUp(RegisterRequest request) async {
+    return await Request.send<RegisterRequest, AuthResponse>(
+      'http://${this.ip}:${this.port}/user/register',
+      'post',
+      requestBody: request,
+    );
   }
 
   @override
-  Future getReportForTimePeriod(DateTime startTime, DateTime endTime) async {
-    // TODO: implement getInfoForTimePeriod
+  Future<GetMetricsResponse> getMetricsForTimePeriod(
+      GetMetricsRequest request, String token) async {
+    return await Request.send<GetMetricsRequest, GetMetricsResponse>(
+      'http://${this.ip}:${this.port}/report/get_time_metrics_all',
+      'post',
+      requestBody: request,
+      headers: {'Authentication': token},
+    );
+  }
+
+  @override
+  Future<BasicResponse> deleteEvent(DeleteEventRequest request, String token) async {
+    return await Request.send<DeleteEventRequest, BasicResponse>(
+      'http://${this.ip}:${this.port}/event/delete',
+      'post',
+      requestBody: request,
+      headers: {'Authentication': token},
+    );
+  }
+
+  @override
+  Future<EventListResponse> fetchEventsForCategory(
+      EventListRequest request, String token) async {
+    return await Request.send<EventListRequest, EventListResponse>(
+      'http://${this.ip}:${this.port}/event/get_list',
+      'post',
+      requestBody: request,
+      headers: {'Authentication': token},
+    );
   }
 }

@@ -11,6 +11,8 @@ import 'package:time_budget/widgets/category_list_item.dart';
 import 'package:time_budget/widgets/event_dialog.dart';
 import 'package:time_budget/widgets/percentage_ring.dart';
 
+import 'category.dart';
+
 class MainView extends StatefulWidget {
   @override
   _MainViewState createState() => _MainViewState();
@@ -386,13 +388,20 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildCategoryList(List<Category> categories) {
+  Widget _buildCategoryList(
+    List<Category> categories,
+    DateTime startTime,
+    DateTime endTime,
+  ) {
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemCount: categories.length,
       itemBuilder: (context, i) => CategoryListItem(
         category: categories[i],
+        startTime: startTime,
+        endTime: endTime,
+        onTap: _onCategoryTapped,
       ),
     );
   }
@@ -553,7 +562,7 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
             _buildTimeSpentRow(Theme.of(context).accentColor),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: _buildCategoryList(categories),
+              child: _buildCategoryList(categories, startTime, endTime),
             ),
           ],
         ),
@@ -596,6 +605,21 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
           end: eventData['endTime'],
         ),
       ),
+    ),
+  }
+
+  void _onCategoryTapped(
+    Category category,
+    DateTime startTime,
+    DateTime endTime,
+  ) {
+    Navigator.of(context).pushNamed(
+      CategoryView.routeName,
+      arguments: Map<String, dynamic>.of({
+        'category': category,
+        'startTime': startTime,
+        'endTime': endTime,
+      }),
     );
   }
 }
