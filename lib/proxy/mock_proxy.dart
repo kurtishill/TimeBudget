@@ -22,7 +22,7 @@ class MockProxy implements IProxy {
   }
 
   @override
-  Future getMetricsForTimePeriod(GetMetricsRequest request) async {
+  Future getMetricsForTimePeriod(GetMetricsRequest request, String token) async {
     await Future<void>.delayed(Duration(seconds: 2));
     DateTime startAt = DateTime(0, 0, 0, 0, 0, request.startAt);
     DateTime endAt = DateTime(0, 0, 0, 0, 0, request.endAt);
@@ -35,12 +35,12 @@ class MockProxy implements IProxy {
   }
 
   @override
-  Future deleteEvent(DeleteEventRequest request) async {
+  Future deleteEvent(DeleteEventRequest request, String token) async {
     return await Future.value(true);
   }
 
   @override
-  Future fetchEventsForCategory(EventListRequest request) async {
+  Future fetchEventsForCategory(EventListRequest request, String token) async {
     await Future.delayed(Duration(seconds: 1));
     return <Event>[
       Event(

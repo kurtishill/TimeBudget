@@ -5,11 +5,11 @@ import 'package:time_budget/requests/report/get_metrics_request.dart';
 class GetReportForTimePeriodService {
   final IProxy _proxy = ProxyFactory.proxy;
 
-  Future getReportForTimePeriod(DateTime startTime, DateTime endTime) async {
+  Future getReportForTimePeriod(DateTime startTime, DateTime endTime, String token) async {
     final request = GetMetricsRequest(
       startAt: startTime.millisecondsSinceEpoch ~/ 1000,
       endAt: endTime.millisecondsSinceEpoch ~/ 1000,
     );
-    return await _proxy.getMetricsForTimePeriod(request);
+    return await _proxy.getMetricsForTimePeriod(request, token);
   }
 }

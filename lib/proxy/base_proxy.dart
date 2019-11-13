@@ -8,7 +8,7 @@ import 'package:time_budget/responses/auth_response.dart';
 abstract class IProxy {
   Future<AuthResponse> login(LoginRequest request);
   Future<AuthResponse> signUp(RegisterRequest request);
-  Future getMetricsForTimePeriod(GetMetricsRequest request);
-  Future deleteEvent(DeleteEventRequest request);
-  Future fetchEventsForCategory(EventListRequest request);
+  Future getMetricsForTimePeriod(GetMetricsRequest request, String token);
+  Future deleteEvent(DeleteEventRequest request, String token);
+  Future fetchEventsForCategory(EventListRequest request, String token);
 }
