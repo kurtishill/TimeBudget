@@ -598,14 +598,14 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
     _mainBloc.add(
       AddNewEventMainEvent(
         newEvent: Event(
-          id: '',
+          id: 0,
           name: eventData['eventName'],
           description: eventData['eventDescription'],
           start: eventData['startTime'],
           end: eventData['endTime'],
         ),
       ),
-    ),
+    );
   }
 
   void _onCategoryTapped(
