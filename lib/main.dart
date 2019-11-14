@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_budget/models/category.dart';
@@ -43,8 +41,8 @@ class _TimeBudgetAppState extends State<TimeBudgetApp> {
   @override
   Widget build(BuildContext context) {
     /// Proxy factory configured to use the mock proxy throughout the app
-    ProxyFactory.configure(MockProxyFactory());
-    // ProxyFactory.configure(RealProxyFactory(ip: '', port: '8080'));
+    // ProxyFactory.configure(MockProxyFactory());
+    ProxyFactory.configure(RealProxyFactory(ip: '10.37.59.176', port: '8080'));
 
     return MultiBlocProvider(
       providers: [

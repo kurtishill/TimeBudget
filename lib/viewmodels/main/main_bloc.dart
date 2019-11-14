@@ -29,6 +29,10 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         endTime: event.endTime,
       );
 
+      if (_appState.availableCategories.isEmpty) {
+        await _serverFacade.activeCategories;
+      }
+
       await _serverFacade.getMetricsForTimePeriod(
         event.startTime,
         event.endTime,
@@ -43,15 +47,21 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
       final s = state as TimeMainState;
 
+      yield InitialMainState();
+
       yield LoadedMainState(
         startTime: s.startTime,
         endTime: s.endTime,
         categories: report.metrics.values.toList(),
         totalSeconds: totalSecondsForTimePeriod,
       );
-    }
-    else if (event is AddNewEventMainEvent) {
-
+    } else if (event is AddNewEventMainEvent) {
+      await _serverFacade.createEvent(
+        event.categoryId,
+        event.newEvent.name,
+        event.newEvent.start,
+        event.newEvent.end,
+      );
     }
   }
 }

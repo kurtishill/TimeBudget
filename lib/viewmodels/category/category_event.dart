@@ -7,9 +7,13 @@ abstract class CategoryEvent extends Equatable {
 }
 
 class DeleteEventCategoryEvent extends CategoryEvent {
+  final int categoryId;
   final int eventId;
 
-  DeleteEventCategoryEvent({@required this.eventId});
+  DeleteEventCategoryEvent({
+    @required this.categoryId,
+    @required this.eventId,
+  });
 
   @override
   List<Object> get props => [eventId];

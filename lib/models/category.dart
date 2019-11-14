@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:time_budget/models/event.dart';
+import 'package:time_budget/state/app_state.dart';
 
 class Category {
   final int id;
@@ -18,57 +19,38 @@ class Category {
     @required this.color,
   });
 
-  factory Category.categoryFromMetrics(int id, int time, int color) {
+  factory Category.categoryFromMetrics(int id, int time) {
+    String name;
     switch (id) {
       case 1:
-        return Category(
-          id: id,
-          name: 'Sleep',
-          amountOfTime: time,
-          color: Color(color),
-        );
+        name = 'Amusement';
+        break;
       case 2:
-        return Category(
-          id: id,
-          name: 'Work',
-          amountOfTime: time,
-          color: Color(color),
-        );
+        name = 'School';
+        break;
       case 3:
-        return Category(
-          id: id,
-          name: 'School',
-          amountOfTime: time,
-          color: Color(color),
-        );
+        name = 'Sleep';
+        break;
       case 4:
-        return Category(
-          id: id,
-          name: 'Eat',
-          color: Color(color),
-        );
+        name = 'Work';
+        break;
       case 5:
-        return Category(
-          id: id,
-          name: 'Health/Wellness',
-          amountOfTime: time,
-          color: Color(color),
-        );
+        name = 'Eat';
+        break;
       case 6:
-        return Category(
-          id: id,
-          name: 'Amusement',
-          amountOfTime: time,
-          color: Color(color),
-        );
+        name = 'Health/Wellness';
+        break;
       default:
-        return Category(
-          id: id,
-          name: 'Sleep',
-          amountOfTime: time,
-          color: Color(color),
-        );
+        name = '';
     }
+
+    return Category(
+      id: id,
+      name: name,
+      amountOfTime: time,
+      color:
+          AppState().availableCategories?.firstWhere((c) => c.id == id)?.color,
+    );
   }
 
   bool operator ==(o) {

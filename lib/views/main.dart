@@ -597,6 +597,7 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
   void _createEvent(Map<String, dynamic> eventData) {
     _mainBloc.add(
       AddNewEventMainEvent(
+        categoryId: eventData['categoryId'],
         newEvent: Event(
           id: 0,
           name: eventData['eventName'],

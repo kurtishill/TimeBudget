@@ -6,4 +6,5 @@ class Strings {
   static const name = 'Name';
   static const startTime = 'Start Time';
   static const endTime = 'End Time';
+  static const category = 'Category';
 }
