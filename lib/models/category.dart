@@ -61,6 +61,7 @@ class Category {
         this.id == o.id &&
         this.name == o.name &&
         this.amountOfTime == o.amountOfTime &&
+        this.events == o.events &&
         this.color == o.color;
   }
 
