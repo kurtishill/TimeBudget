@@ -45,40 +45,25 @@ class _CategoryViewState extends State<CategoryView> {
       appBar: AppBar(
         title: Text(widget.category.name),
       ),
-      body: BlocListener(
+      body: BlocBuilder(
         bloc: _categoryBloc,
-        listener: (context, state) {
-          if (state is EventDeletedCategoryState) {
-            Scaffold.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  'Deleting event was ${state.success ? 'successful!' : 'unsuccessful'}',
-                ),
-                duration: Duration(seconds: 2),
+        builder: (context, state) {
+          if (state is EventsLoadedCategoryState) {
+            return ListView.builder(
+              itemCount: state.events.length,
+              itemBuilder: (context, i) => EventListItem(
+                event: state.events[i],
+                onDelete: _deleteEvent,
               ),
             );
+          } else if (state is LoadingCategoryState) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return Container();
           }
         },
-        child: BlocBuilder(
-          bloc: _categoryBloc,
-          builder: (context, state) {
-            if (state is EventsLoadedCategoryState) {
-              return ListView.builder(
-                itemCount: state.events.length,
-                itemBuilder: (context, i) => EventListItem(
-                  event: state.events[i],
-                  onDelete: _deleteEvent,
-                ),
-              );
-            } else if (state is LoadingCategoryState) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              return Container();
-            }
-          },
-        ),
       ),
     );
   }

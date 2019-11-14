@@ -25,6 +25,7 @@ class RealProxy implements IProxy {
 
   @override
   Future<AuthResponse> login(LoginRequest request) async {
+    await Future.delayed(Duration(seconds: 1));
     return await Request.send<LoginRequest, AuthResponse>(
       'http://${this.ip}:${this.port}/user/login',
       'post',
@@ -34,6 +35,7 @@ class RealProxy implements IProxy {
 
   @override
   Future<AuthResponse> signUp(RegisterRequest request) async {
+    await Future.delayed(Duration(seconds: 1));
     return await Request.send<RegisterRequest, AuthResponse>(
       'http://${this.ip}:${this.port}/user/register',
       'post',

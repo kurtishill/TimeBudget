@@ -124,24 +124,27 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.keyboard_arrow_left,
-                color: Colors.grey,
-                size: 30,
-              ),
-              onPressed: !loading
-                  ? () {
-                      _mainBloc.add(
-                        ChangeTimePeriodMainEvent(
-                          startTime: startTime.subtract(
-                            Duration(days: 1),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: GestureDetector(
+                child: Icon(
+                  Icons.keyboard_arrow_left,
+                  color: Colors.grey,
+                  size: 30,
+                ),
+                onTap: !loading
+                    ? () {
+                        _mainBloc.add(
+                          ChangeTimePeriodMainEvent(
+                            startTime: startTime.subtract(
+                              Duration(days: 1),
+                            ),
+                            endTime: endTime,
                           ),
-                          endTime: endTime,
-                        ),
-                      );
-                    }
-                  : null,
+                        );
+                      }
+                    : null,
+              ),
             ),
             GestureDetector(
               child: Column(
@@ -183,26 +186,29 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
                     }
                   : null,
             ),
-            IconButton(
-              icon: Icon(
-                Icons.keyboard_arrow_right,
-                color: !_isSameDate(startTime, endTime)
-                    ? Colors.grey
-                    : Colors.grey[350],
-                size: 30,
-              ),
-              onPressed: innerArrowsEnabled
-                  ? () {
-                      _mainBloc.add(
-                        ChangeTimePeriodMainEvent(
-                          startTime: startTime.add(
-                            Duration(days: 1),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: GestureDetector(
+                child: Icon(
+                  Icons.keyboard_arrow_right,
+                  color: !_isSameDate(startTime, endTime)
+                      ? Colors.grey
+                      : Colors.grey[350],
+                  size: 30,
+                ),
+                onTap: innerArrowsEnabled
+                    ? () {
+                        _mainBloc.add(
+                          ChangeTimePeriodMainEvent(
+                            startTime: startTime.add(
+                              Duration(days: 1),
+                            ),
+                            endTime: endTime,
                           ),
-                          endTime: endTime,
-                        ),
-                      );
-                    }
-                  : null,
+                        );
+                      }
+                    : null,
+              ),
             ),
           ],
         ),
@@ -211,26 +217,29 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.keyboard_arrow_left,
-                color: !_isSameDate(startTime, endTime)
-                    ? Colors.grey
-                    : Colors.grey[350],
-                size: 30,
-              ),
-              onPressed: innerArrowsEnabled
-                  ? () {
-                      _mainBloc.add(
-                        ChangeTimePeriodMainEvent(
-                          startTime: startTime,
-                          endTime: endTime.subtract(
-                            Duration(days: 1),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: GestureDetector(
+                child: Icon(
+                  Icons.keyboard_arrow_left,
+                  color: !_isSameDate(startTime, endTime)
+                      ? Colors.grey
+                      : Colors.grey[350],
+                  size: 30,
+                ),
+                onTap: innerArrowsEnabled
+                    ? () {
+                        _mainBloc.add(
+                          ChangeTimePeriodMainEvent(
+                            startTime: startTime,
+                            endTime: endTime.subtract(
+                              Duration(days: 1),
+                            ),
                           ),
-                        ),
-                      );
-                    }
-                  : null,
+                        );
+                      }
+                    : null,
+              ),
             ),
             GestureDetector(
               child: Column(
@@ -272,24 +281,27 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
                     }
                   : null,
             ),
-            IconButton(
-              icon: Icon(
-                Icons.keyboard_arrow_right,
-                color: Colors.grey,
-                size: 30,
-              ),
-              onPressed: !loading
-                  ? () {
-                      _mainBloc.add(
-                        ChangeTimePeriodMainEvent(
-                          startTime: startTime,
-                          endTime: endTime.add(
-                            Duration(days: 1),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: GestureDetector(
+                child: Icon(
+                  Icons.keyboard_arrow_right,
+                  color: Colors.grey,
+                  size: 30,
+                ),
+                onTap: !loading
+                    ? () {
+                        _mainBloc.add(
+                          ChangeTimePeriodMainEvent(
+                            startTime: startTime,
+                            endTime: endTime.add(
+                              Duration(days: 1),
+                            ),
                           ),
-                        ),
-                      );
-                    }
-                  : null,
+                        );
+                      }
+                    : null,
+              ),
             ),
           ],
         ),
@@ -550,7 +562,11 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
             SizedBox(
               height: 30.0,
             ),
-            _buildDateSelectionRow(context, startTime, endTime, loading),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20.0),
+              child:
+                  _buildDateSelectionRow(context, startTime, endTime, loading),
+            ),
             SizedBox(
               height: 60.0,
             ),

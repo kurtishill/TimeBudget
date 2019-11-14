@@ -16,15 +16,6 @@ class LoadingCategoryState extends CategoryState {
   List<Object> get props => null;
 }
 
-class EventDeletedCategoryState extends CategoryState {
-  final bool success;
-
-  EventDeletedCategoryState({@required this.success});
-
-  @override
-  List<Object> get props => [success];
-}
-
 class EventsLoadedCategoryState extends CategoryState {
   final List<Event> events;
 
