@@ -15,17 +15,13 @@ class FetchEventsForCategoryService {
   ) async {
     final appState = AppState();
 
-    // if (appState.report.metrics[categoryId].events.isNotEmpty) {
-    //   appState.updateEvents(
-    //     categoryId,
-    //     appState.report.metrics[categoryId].events,
-    //   );
-    // }
+    final startAt = startTime.millisecondsSinceEpoch ~/ 1000;
+    final endAt = endTime.millisecondsSinceEpoch ~/ 1000;
 
     final request = EventListRequest(
       categoryID: categoryId,
-      startAt: startTime.millisecondsSinceEpoch ~/ 1000,
-      endAt: endTime.millisecondsSinceEpoch ~/ 1000,
+      startAt: startAt,
+      endAt: endAt,
     );
     final response = await _proxy.fetchEventsForCategory(request, token);
 
@@ -35,11 +31,16 @@ class FetchEventsForCategoryService {
       response.events.forEach((eventResponse) {
         final start = DateTime(0, 0, 0, 0, 0, eventResponse.startAt);
         final end = DateTime(0, 0, 0, 0, 0, eventResponse.endAt);
+
         final event = Event(
           id: eventResponse.eventID,
           name: eventResponse.description,
-          start: start,
-          end: end,
+          start: eventResponse.startAt < startAt
+              ? DateTime(0, 0, 0, 0, 0, startAt)
+              : start,
+          end: eventResponse.endAt > endAt
+              ? DateTime(0, 0, 0, 0, 0, endAt)
+              : end,
         );
 
         events.add(event);

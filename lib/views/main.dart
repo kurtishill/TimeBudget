@@ -38,7 +38,7 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
 
     _fabController = new AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 50),
+      duration: const Duration(milliseconds: 150),
     );
     super.initState();
   }
@@ -80,15 +80,28 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       title: Text('Time Budget'),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(
-            Icons.more_vert,
-            color: Colors.white,
+      leading: PopupMenuButton(
+        itemBuilder: (context) => [
+          PopupMenuItem(
+            child: Row(
+              children: <Widget>[
+                Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text('Logout'),
+              ],
+            ),
           ),
-          onPressed: () {},
+        ],
+        icon: Icon(
+          Icons.more_vert,
+          color: Colors.white,
         ),
-      ],
+      ),
     );
   }
 
@@ -111,24 +124,27 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.keyboard_arrow_left,
-                color: Colors.grey,
-                size: 30,
-              ),
-              onPressed: !loading
-                  ? () {
-                      _mainBloc.add(
-                        ChangeTimePeriodMainEvent(
-                          startTime: startTime.subtract(
-                            Duration(days: 1),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: GestureDetector(
+                child: Icon(
+                  Icons.keyboard_arrow_left,
+                  color: Colors.grey,
+                  size: 30,
+                ),
+                onTap: !loading
+                    ? () {
+                        _mainBloc.add(
+                          ChangeTimePeriodMainEvent(
+                            startTime: startTime.subtract(
+                              Duration(days: 1),
+                            ),
+                            endTime: endTime,
                           ),
-                          endTime: endTime,
-                        ),
-                      );
-                    }
-                  : null,
+                        );
+                      }
+                    : null,
+              ),
             ),
             GestureDetector(
               child: Column(
@@ -170,26 +186,29 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
                     }
                   : null,
             ),
-            IconButton(
-              icon: Icon(
-                Icons.keyboard_arrow_right,
-                color: !_isSameDate(startTime, endTime)
-                    ? Colors.grey
-                    : Colors.grey[350],
-                size: 30,
-              ),
-              onPressed: innerArrowsEnabled
-                  ? () {
-                      _mainBloc.add(
-                        ChangeTimePeriodMainEvent(
-                          startTime: startTime.add(
-                            Duration(days: 1),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: GestureDetector(
+                child: Icon(
+                  Icons.keyboard_arrow_right,
+                  color: !_isSameDate(startTime, endTime)
+                      ? Colors.grey
+                      : Colors.grey[350],
+                  size: 30,
+                ),
+                onTap: innerArrowsEnabled
+                    ? () {
+                        _mainBloc.add(
+                          ChangeTimePeriodMainEvent(
+                            startTime: startTime.add(
+                              Duration(days: 1),
+                            ),
+                            endTime: endTime,
                           ),
-                          endTime: endTime,
-                        ),
-                      );
-                    }
-                  : null,
+                        );
+                      }
+                    : null,
+              ),
             ),
           ],
         ),
@@ -198,26 +217,29 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.keyboard_arrow_left,
-                color: !_isSameDate(startTime, endTime)
-                    ? Colors.grey
-                    : Colors.grey[350],
-                size: 30,
-              ),
-              onPressed: innerArrowsEnabled
-                  ? () {
-                      _mainBloc.add(
-                        ChangeTimePeriodMainEvent(
-                          startTime: startTime,
-                          endTime: endTime.subtract(
-                            Duration(days: 1),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: GestureDetector(
+                child: Icon(
+                  Icons.keyboard_arrow_left,
+                  color: !_isSameDate(startTime, endTime)
+                      ? Colors.grey
+                      : Colors.grey[350],
+                  size: 30,
+                ),
+                onTap: innerArrowsEnabled
+                    ? () {
+                        _mainBloc.add(
+                          ChangeTimePeriodMainEvent(
+                            startTime: startTime,
+                            endTime: endTime.subtract(
+                              Duration(days: 1),
+                            ),
                           ),
-                        ),
-                      );
-                    }
-                  : null,
+                        );
+                      }
+                    : null,
+              ),
             ),
             GestureDetector(
               child: Column(
@@ -259,24 +281,27 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
                     }
                   : null,
             ),
-            IconButton(
-              icon: Icon(
-                Icons.keyboard_arrow_right,
-                color: Colors.grey,
-                size: 30,
-              ),
-              onPressed: !loading
-                  ? () {
-                      _mainBloc.add(
-                        ChangeTimePeriodMainEvent(
-                          startTime: startTime,
-                          endTime: endTime.add(
-                            Duration(days: 1),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: GestureDetector(
+                child: Icon(
+                  Icons.keyboard_arrow_right,
+                  color: Colors.grey,
+                  size: 30,
+                ),
+                onTap: !loading
+                    ? () {
+                        _mainBloc.add(
+                          ChangeTimePeriodMainEvent(
+                            startTime: startTime,
+                            endTime: endTime.add(
+                              Duration(days: 1),
+                            ),
                           ),
-                        ),
-                      );
-                    }
-                  : null,
+                        );
+                      }
+                    : null,
+              ),
             ),
           ],
         ),
@@ -397,12 +422,21 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemCount: categories.length,
-      itemBuilder: (context, i) => CategoryListItem(
-        category: categories[i],
-        startTime: startTime,
-        endTime: endTime,
-        onTap: _onCategoryTapped,
-      ),
+      itemBuilder: (context, i) {
+        int seconds = categories[i].amountOfTime;
+        int startToEndTime = endTime.difference(startTime).inSeconds;
+        double percent = seconds / startToEndTime * 100;
+        return CategoryListItem(
+          category: categories[i],
+          startTime: startTime,
+          endTime: endTime,
+          color: categories[i].amountOfTime == 0
+              ? Theme.of(context).textTheme.body2.color
+              : categories[i].color,
+          percentage: percent,
+          onTap: _onCategoryTapped,
+        );
+      },
     );
   }
 
@@ -457,6 +491,8 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
                       context: context,
                       builder: (context) => EventDialog(),
                     );
+
+                    _fabController.reverse();
 
                     if (data != null) {
                       _createEvent(data);
@@ -526,7 +562,11 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
             SizedBox(
               height: 30.0,
             ),
-            _buildDateSelectionRow(context, startTime, endTime, loading),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20.0),
+              child:
+                  _buildDateSelectionRow(context, startTime, endTime, loading),
+            ),
             SizedBox(
               height: 60.0,
             ),
@@ -554,7 +594,10 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 60.0),
-              child: _buildSummaryRow(categories.length, seconds, percent),
+              child: _buildSummaryRow(
+                  categories.fold(0, (t, c) => t + c.events.length),
+                  seconds,
+                  percent),
             ),
             SizedBox(
               height: 20,

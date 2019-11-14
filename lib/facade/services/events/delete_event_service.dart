@@ -10,7 +10,7 @@ class DeleteEventService {
     final request = DeleteEventRequest(eventID: eventId);
     final response = await _proxy.deleteEvent(request, token);
 
-    if (response.success) {
+    if (response != null && response.success) {
       final newEvents = AppState().events(categoryId);
       newEvents.removeWhere((e) => e.id == eventId);
       AppState().updateEvents(categoryId, newEvents);

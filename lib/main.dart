@@ -20,7 +20,6 @@ class TimeBudgetApp extends StatefulWidget {
 }
 
 class _TimeBudgetAppState extends State<TimeBudgetApp> {
-  // StreamSubscription<User> _authSub;
   final AppStateBase appState = AppState();
 
   bool _authenticated = false;
@@ -42,7 +41,7 @@ class _TimeBudgetAppState extends State<TimeBudgetApp> {
   Widget build(BuildContext context) {
     /// Proxy factory configured to use the mock proxy throughout the app
     // ProxyFactory.configure(MockProxyFactory());
-    ProxyFactory.configure(RealProxyFactory(ip: '10.37.59.176', port: '8080'));
+    ProxyFactory.configure(RealProxyFactory(ip: '10.0.1.21', port: '8080'));
 
     return MultiBlocProvider(
       providers: [
@@ -55,9 +54,6 @@ class _TimeBudgetAppState extends State<TimeBudgetApp> {
         BlocProvider<AuthBloc>(
           builder: (context) => AuthBloc(),
         ),
-        // BlocProvider<CategoryBloc>(
-        //   builder: (context) => CategoryBloc(),
-        // ),
       ],
       child: BlocBuilder<ThemeBloc, ThemeData>(
         builder: (context, theme) {
@@ -68,7 +64,6 @@ class _TimeBudgetAppState extends State<TimeBudgetApp> {
             routes: <String, WidgetBuilder>{
               '/': (BuildContext context) =>
                   _authenticated ? MainView() : AuthView(),
-              // CategoryView.routeName: (BuildContext context) => CategoryView(),
             },
             onGenerateRoute: (RouteSettings settings) {
               switch (settings.name) {

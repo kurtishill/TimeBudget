@@ -41,10 +41,10 @@ class Request {
       if (response.statusCode != 200) {
         return null;
       } else {
-        if (response.contentLength == 0) {
-          responseObject = BasicResponse().fromRawJson('{"success": true}');
-        } else {
+        try {
           responseObject = Decodable.create(U).fromRawJson(response.body);
+        } catch (e) {
+          responseObject = BasicResponse(success: true);
         }
       }
 

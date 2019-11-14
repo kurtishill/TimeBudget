@@ -37,6 +37,20 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         event.startTime,
         event.endTime,
       );
+
+      await Future.wait(
+        _appState.report.metrics.keys.toList().map<Future>(
+          (categoryId) async {
+            if (_appState.report.metrics[categoryId].amountOfTime > 0) {
+              return await _serverFacade.fetchEventsForCategory(
+                categoryId,
+                event.startTime,
+                event.endTime,
+              );
+            }
+          },
+        ),
+      );
     } else if (event is ReportUpdatedMainEvent) {
       final report = event.report;
 
