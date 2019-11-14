@@ -39,16 +39,6 @@ class _CategoryViewState extends State<CategoryView> {
     super.didChangeDependencies();
   }
 
-  Widget _buildFloatingActionButton() {
-    return FloatingActionButton(
-      child: Icon(
-        Icons.add,
-        color: Colors.white,
-      ),
-      onPressed: () {},
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,7 +80,6 @@ class _CategoryViewState extends State<CategoryView> {
           },
         ),
       ),
-      floatingActionButton: _buildFloatingActionButton(),
     );
   }
 
