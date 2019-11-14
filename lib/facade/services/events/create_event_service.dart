@@ -26,7 +26,11 @@ class CreateEventService {
 
     final response = await _proxy.createEvent(request, token);
 
-    if (response != null) {
+    final appState = AppState();
+
+    if (response != null &&
+        start >= appState.report.start &&
+        end <= appState.report.end) {
       List<Event> events = AppState().events(categoryId);
 
       final start = DateTime(0, 0, 0, 0, 0, response.startAt);
@@ -40,7 +44,7 @@ class CreateEventService {
         ),
       );
 
-      AppState().updateEvents(categoryId, events);
+      appState.updateEvents(categoryId, events);
     }
   }
 }

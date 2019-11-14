@@ -3,9 +3,13 @@ import 'package:time_budget/models/category.dart' as cat;
 import 'package:time_budget/models/event.dart';
 
 class Report {
+  final int start;
+  final int end;
   final Map<int, cat.Category> metrics;
 
   Report({
+    @required this.start,
+    @required this.end,
     @required this.metrics,
   });
 

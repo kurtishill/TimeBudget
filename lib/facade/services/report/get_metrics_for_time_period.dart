@@ -9,10 +9,15 @@ class GetMetricsForTimePeriodService {
   final IProxy _proxy = ProxyFactory.proxy;
 
   Future getMetricsForTimePeriod(
-      DateTime startTime, DateTime endTime, String token) async {
+    DateTime startTime,
+    DateTime endTime,
+    String token,
+  ) async {
+    final int start = startTime.millisecondsSinceEpoch ~/ 1000;
+    final int end = endTime.millisecondsSinceEpoch ~/ 1000;
     final request = GetMetricsRequest(
-      startAt: startTime.millisecondsSinceEpoch ~/ 1000,
-      endAt: endTime.millisecondsSinceEpoch ~/ 1000,
+      startAt: start,
+      endAt: end,
     );
 
     final response = await _proxy.getMetricsForTimePeriod(request, token);
@@ -31,7 +36,11 @@ class GetMetricsForTimePeriodService {
       });
 
       AppState().updateReport(
-        Report(metrics: metrics),
+        Report(
+          start: start,
+          end: end,
+          metrics: metrics,
+        ),
       );
     }
 
