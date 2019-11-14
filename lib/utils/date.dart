@@ -10,7 +10,17 @@ class DateUtils {
   }
 
   static String toHoursAndMinutes(DateTime time) {
-    final DateFormat dateFormat = DateFormat("h 'hours' m 'minutes'");
+    DateFormat dateFormat;
+
+    if (time.hour > 0 && time.minute > 0) {
+      dateFormat = DateFormat("h 'hours' m 'minutes'");
+    } else if (time.hour > 0) {
+      dateFormat = DateFormat("h 'hours'");
+    } else if (time.minute > 0) {
+      dateFormat = DateFormat("m 'minutes'");
+    } else {
+      return 'No time budgeted';
+    }
     return dateFormat.format(time);
   }
 

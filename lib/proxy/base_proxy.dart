@@ -1,11 +1,14 @@
 import 'package:time_budget/requests/auth/login_request.dart';
 import 'package:time_budget/requests/auth/register_request.dart';
+import 'package:time_budget/requests/events/create_event_request.dart';
 import 'package:time_budget/requests/events/delete_event_request.dart';
 import 'package:time_budget/requests/events/event_list_request.dart';
 import 'package:time_budget/requests/report/get_metrics_request.dart';
 import 'package:time_budget/responses/auth/auth_response.dart';
 import 'package:time_budget/responses/basic_response.dart';
+import 'package:time_budget/responses/events/create_event_response.dart';
 import 'package:time_budget/responses/events/event_list_response.dart';
+import 'package:time_budget/responses/report/get_active_categories_response.dart';
 import 'package:time_budget/responses/report/get_metrics_response.dart';
 
 abstract class IProxy {
@@ -19,7 +22,8 @@ abstract class IProxy {
 
   /// Gets the metrics for a given time period
   /// Returns a GetMetricsResponse (Map<int, double> report)
-  Future<GetMetricsResponse> getMetricsForTimePeriod(GetMetricsRequest request, String token);
+  Future<GetMetricsResponse> getMetricsForTimePeriod(
+      GetMetricsRequest request, String token);
 
   /// Deletes a given event
   /// Returns a BasicResponse (bool success)
@@ -27,5 +31,17 @@ abstract class IProxy {
 
   /// Gets the events for a specific category
   /// Returns an EventListResponse (List<EventResponse> events)
-  Future<EventListResponse> fetchEventsForCategory(EventListRequest request, String token);
+  Future<EventListResponse> fetchEventsForCategory(
+      EventListRequest request, String token);
+
+  /// Creates an event for a specific category
+  /// Returns a BasicResponse (bool success)
+  Future<CreateEventResponse> createEvent(
+    CreateEventRequest request,
+    String token,
+  );
+
+  /// Gets the active categories for the user
+  /// Returns a GetActiveCategoriesResponse (int categoryId, String description, int deletedAt)
+  Future<GetActiveCategoriesResponse> getActiveCategories(String token);
 }

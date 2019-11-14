@@ -19,16 +19,15 @@ class GetMetricsForTimePeriodService {
 
     if (response != null) {
       Map<int, Category> metrics = {};
-      response.report.forEach((metric) {
-        final timeInSeconds = (metric.time * 3600).round();
+      response.report.forEach((id, time) {
+        final timeInSeconds = (time * 3600).round();
         final category = Category.categoryFromMetrics(
-          metric.id,
+          id,
           timeInSeconds,
-          metric.color,
         );
         category.events = [];
 
-        metrics[metric.id] = category;
+        metrics[id] = category;
       });
 
       AppState().updateReport(

@@ -39,4 +39,6 @@ class Event {
     final seconds = end.difference(start).inSeconds;
     return DateTime(0, 0, 0, 0, 0, seconds);
   }
+
+  int get timeInSeconds => end.difference(start).inSeconds;
 }

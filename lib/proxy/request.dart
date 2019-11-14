@@ -1,3 +1,4 @@
+import 'package:time_budget/responses/basic_response.dart';
 import 'package:time_budget/serialization/decodable.dart';
 import 'package:time_budget/serialization/encodable.dart';
 
@@ -20,7 +21,7 @@ class Request {
         break;
     }
     try {
-      String body = requestBody.toRawJson();
+      String body = requestBody?.toRawJson();
       http.Response response;
 
       if (method.toLowerCase() == 'get') {
@@ -38,10 +39,10 @@ class Request {
 
       Decodable responseObject;
       if (response.statusCode != 200) {
-        responseObject = Decodable.create(U).fromRawJson("\"success\": false");
+        return null;
       } else {
         if (response.contentLength == 0) {
-          responseObject = Decodable.create(U).fromRawJson("\"success\": true");
+          responseObject = BasicResponse().fromRawJson('{"success": true}');
         } else {
           responseObject = Decodable.create(U).fromRawJson(response.body);
         }

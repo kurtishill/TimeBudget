@@ -15,12 +15,12 @@ class FetchEventsForCategoryService {
   ) async {
     final appState = AppState();
 
-    if (appState.report.metrics[categoryId].events.isNotEmpty) {
-      appState.updateEvents(
-        categoryId,
-        appState.report.metrics[categoryId].events,
-      );
-    }
+    // if (appState.report.metrics[categoryId].events.isNotEmpty) {
+    //   appState.updateEvents(
+    //     categoryId,
+    //     appState.report.metrics[categoryId].events,
+    //   );
+    // }
 
     final request = EventListRequest(
       categoryID: categoryId,

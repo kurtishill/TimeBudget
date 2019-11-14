@@ -53,7 +53,9 @@ class PercentageRing extends CustomPainter {
         sweepAngle,
       );
 
-      if (i < this.categories.length && this.categories[i].name != null) {
+      if (i < this.categories.length &&
+          this.categories[i].name != null &&
+          this.categories[i].amountOfTime > 0) {
         _drawLabel(
           canvas,
           this.categories[i],

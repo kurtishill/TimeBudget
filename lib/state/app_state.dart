@@ -1,4 +1,5 @@
 import 'package:rxdart/rxdart.dart';
+import 'package:time_budget/models/category.dart';
 import 'package:time_budget/models/event.dart';
 import 'package:time_budget/models/report.dart';
 import 'package:time_budget/models/user.dart';
@@ -16,6 +17,8 @@ class AppState extends AppStateBase {
 
   final _user = BehaviorSubject<User>();
   final _report = BehaviorSubject<Report>();
+
+  List<Category> _availableCategories = [];
 
   Stream<User> get onUserChanged => _user.stream;
 
@@ -42,10 +45,17 @@ class AppState extends AppStateBase {
 
   void updateEvents(int categoryId, List<Event> events) {
     report.metrics[categoryId].events = events;
-    _report.add(report);
+    report.setEvents(categoryId, events);
+    updateReport(report);
   }
 
   List<Event> events(int id) => _report.value.metrics[id].events;
+
+  List<Category> get availableCategories => _availableCategories;
+
+  void setActiveCategories(List<Category> categories) {
+    _availableCategories = categories;
+  }
 
   void dispose() {
     _user.close();

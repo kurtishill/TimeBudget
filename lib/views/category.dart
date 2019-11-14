@@ -23,7 +23,6 @@ class CategoryView extends StatefulWidget {
 }
 
 class _CategoryViewState extends State<CategoryView> {
-  // Category _category;
   CategoryBloc _categoryBloc;
 
   @override
@@ -97,7 +96,10 @@ class _CategoryViewState extends State<CategoryView> {
 
   void _deleteEvent(int eventId) {
     _categoryBloc.add(
-      DeleteEventCategoryEvent(eventId: eventId),
+      DeleteEventCategoryEvent(
+        categoryId: widget.category.id,
+        eventId: eventId,
+      ),
     );
   }
 }

@@ -1,15 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:time_budget/models/category.dart';
+import 'package:time_budget/state/app_state.dart';
 import 'package:time_budget/strings.dart';
 import 'package:time_budget/utils/date.dart';
+
+mixin CategoryHelper {
+  List<Category> get availableCategories => AppState().availableCategories;
+}
 
 class EventDialog extends StatefulWidget {
   @override
   _EventDialogState createState() => _EventDialogState();
 }
 
-class _EventDialogState extends State<EventDialog> {
+class _EventDialogState extends State<EventDialog> with CategoryHelper {
   final Map<String, dynamic> _data = {
+    'categoryId': null,
     'eventName': null,
     'eventDescription': null,
     'startTime': DateTime.now(),
@@ -17,6 +24,13 @@ class _EventDialogState extends State<EventDialog> {
   };
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _categoryController = TextEditingController();
+
+  @override
+  void dispose() {
+    _categoryController.dispose();
+    super.dispose();
+  }
 
   Widget _buildTimeRange() {
     return Container(
@@ -110,6 +124,46 @@ class _EventDialogState extends State<EventDialog> {
     );
   }
 
+  Widget _buildCategoryField() {
+    return InkWell(
+      onTap: () async {
+        await showDialog(
+          context: context,
+          child: SimpleDialog(
+            title: Text('Categories'),
+            children: availableCategories
+                .map((c) => SimpleDialogOption(
+                      child: Text(c.name),
+                      onPressed: () {
+                        _data['categoryId'] = c.id;
+                        setState(() => _categoryController.text = c.name);
+                        Navigator.of(context).pop();
+                      },
+                    ))
+                .toList(),
+          ),
+        );
+      },
+      child: IgnorePointer(
+        child: TextFormField(
+          controller: _categoryController,
+          decoration: InputDecoration(
+            labelText: Strings.category,
+            labelStyle: TextStyle(
+              color: Colors.grey[700],
+              fontWeight: _categoryController.text.isEmpty
+                  ? FontWeight.bold
+                  : FontWeight.normal,
+            ),
+          ),
+          validator: (value) {
+            return value.isEmpty ? 'Category must not be empty' : null;
+          },
+        ),
+      ),
+    );
+  }
+
   Widget _buildNameTextField() {
     return TextFormField(
       decoration: InputDecoration(
@@ -191,6 +245,14 @@ class _EventDialogState extends State<EventDialog> {
             child: Column(
               children: <Widget>[
                 _buildTimeRange(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Column(
+                    children: <Widget>[
+                      _buildCategoryField(),
+                    ],
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: _buildNameTextField(),

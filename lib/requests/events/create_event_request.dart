@@ -1,26 +1,23 @@
 import 'package:time_budget/serialization/encodable.dart';
 
 class CreateEventRequest extends Encodable {
-  final String userID;
   final String description;
-  final String startAt;
-  final String endAt;
-  final String categoryId;
+  final int startAt;
+  final int endAt;
+  final int categoryID;
 
   CreateEventRequest({
-    this.userID,
     this.description,
     this.startAt,
     this.endAt,
-    this.categoryId,
+    this.categoryID,
   });
 
   @override
   Map<String, dynamic> toJson() => {
-        "userID": userID,
         "description": description,
         "startAt": startAt,
         "endAt": endAt,
-        "categoryID": categoryId,
+        "categoryID": categoryID,
       };
 }
