@@ -13,11 +13,16 @@ class EventListItem extends StatelessWidget {
   });
 
   Widget _buildListItem(BuildContext context, Event event) {
+    final start = event.start.difference(DateTime(0, 0, 0, 6)).inSeconds;
+    final end = event.end.difference(DateTime(0, 0, 0, 6)).inSeconds;
     return Column(
       children: <Widget>[
         ListTile(
           title: Text(event.name),
-          subtitle: Text(event.description ?? ''),
+          // subtitle: Text(event.description ?? ''),
+          subtitle: Text(
+            '${DateUtils.toClockTime(DateTime(0, 0, 0, 0, 0, start))} - ${DateUtils.toClockTime(DateTime(0, 0, 0, 0, 0, end))}',
+          ),
           trailing: Text(
             DateUtils.eventToHoursAndMinutes(
               event.start,

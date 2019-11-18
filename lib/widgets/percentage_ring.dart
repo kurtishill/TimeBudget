@@ -61,6 +61,7 @@ class PercentageRing extends CustomPainter {
           this.categories[i],
           center,
           startAngle + sweepAngle / 2,
+          percentage,
         );
       }
 
@@ -91,12 +92,21 @@ class PercentageRing extends CustomPainter {
   }
 
   void _drawLabel(
-      Canvas canvas, Category label, Offset ringCenter, double angle) {
+    Canvas canvas,
+    Category label,
+    Offset ringCenter,
+    double angle,
+    double percentage,
+  ) {
     final dx = ringCenter.dx + radius * cos(angle);
     final dy = ringCenter.dy + radius * sin(angle);
 
+    final nameLength = '${label.name} ${(percentage * 100).toStringAsFixed(1)}%'
+        .length
+        .toDouble();
+
     final textSpan = TextSpan(
-      text: label.name,
+      text: '${label.name} ${(percentage * 100).toStringAsFixed(1)}%',
       style: TextStyle(
         color: label.color,
         fontSize: 12,
@@ -108,12 +118,12 @@ class PercentageRing extends CustomPainter {
       textDirection: TextDirection.ltr,
     )..layout(
         minWidth: 0,
-        maxWidth: 100,
+        maxWidth: 120,
       );
 
     Offset nameOffset = Offset(0, 0);
     Offset lineOffset = Offset(0, 0);
-    final double nameLength = label.name.length.toDouble();
+    // final double nameLength = label.name.length.toDouble();
 
     // above center
     if ((ringCenter.dy - dy).sign >= 0) {
@@ -131,7 +141,7 @@ class PercentageRing extends CustomPainter {
     } else {
       // below and left
       if ((ringCenter.dx - dx).sign >= 0) {
-        nameOffset = Offset(-30, 5);
+        nameOffset = Offset(5 - nameLength * 4, 5);
         lineOffset = Offset(-5, 3);
 
         // below and right
