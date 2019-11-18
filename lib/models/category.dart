@@ -38,7 +38,7 @@ class Category {
         name = 'Eat';
         break;
       case 6:
-        name = 'Health/Wellness';
+        name = 'Health';
         break;
       default:
         name = '';
