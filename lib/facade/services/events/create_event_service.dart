@@ -29,18 +29,27 @@ class CreateEventService {
     final appState = AppState();
 
     if (response != null &&
-        start >= appState.report.start &&
-        end <= appState.report.end) {
+        (start >= appState.report.start || end <= appState.report.end)) {
       List<Event> events = AppState().events(categoryId);
 
-      final start = DateTime(0, 0, 0, 0, 0, response.startAt);
-      final end = DateTime(0, 0, 0, 0, 0, response.endAt);
+      int eventStart = response.startAt;
+      if (start <= appState.report.start) {
+        eventStart = appState.report.start;
+      }
+
+      int eventEnd = response.endAt;
+      if (end >= appState.report.end) {
+        eventEnd = appState.report.end;
+      }
+
+      final eventStartDateTime = DateTime(0, 0, 0, 0, 0, eventStart);
+      final eventEndDateTime = DateTime(0, 0, 0, 0, 0, eventEnd);
       events.add(
         Event(
           id: response.eventID,
           name: response.description,
-          start: start,
-          end: end,
+          start: eventStartDateTime,
+          end: eventEndDateTime,
         ),
       );
 

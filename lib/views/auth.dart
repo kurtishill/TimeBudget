@@ -338,6 +338,7 @@ class _AuthViewState extends State<AuthView> with TickerProviderStateMixin {
                   if (this._authMode == AuthMode.SIGNUP)
                     TextFormField(
                       focusNode: _emailTextFieldFocusNode,
+                      keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         labelText: 'Email',
                         prefixIcon: Icon(Icons.email),
