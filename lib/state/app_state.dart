@@ -32,7 +32,7 @@ class AppState extends AppStateBase {
     _user.add(null);
   }
 
-  Stream<Report> get onReportChanged => _report.stream;
+  Stream<Report> get onReportChanged => _report.stream.distinct();
 
   void updateReport(Report report) {
     _report.add(report);
@@ -41,7 +41,7 @@ class AppState extends AppStateBase {
   Report get report => _report.value;
 
   Stream<List<Event>> onEventsChanged(int categoryId) =>
-      _report.stream.map((r) => r.metrics[categoryId].events);
+      _report.stream.map((r) => r.metrics[categoryId].events).distinct();
 
   void updateEvents(int categoryId, List<Event> events) {
     report.metrics[categoryId].events = events;

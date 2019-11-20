@@ -59,13 +59,11 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         (t, c) => t + c.amountOfTime,
       );
 
-      final s = state as TimeMainState;
-
       yield InitialMainState();
 
       yield LoadedMainState(
-        startTime: s.startTime,
-        endTime: s.endTime,
+        startTime: report.startTime,
+        endTime: report.endTime,
         categories: report.metrics.values.toList(),
         totalSeconds: totalSecondsForTimePeriod,
       );
