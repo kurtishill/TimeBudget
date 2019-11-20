@@ -82,7 +82,7 @@ class _TBCalendarState extends State<TBCalendar> {
     return CalendarCarousel(
       dayPadding: 0,
       customGridViewPhysics: NeverScrollableScrollPhysics(),
-      height: 420,
+      height: 380,
       isScrollable: false,
       headerTextStyle: TextStyle(
         color: Theme.of(context).primaryColor,

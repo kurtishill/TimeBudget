@@ -36,7 +36,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     if (event is SetNewRangeCalendarEvent) {
       if (event.start.compareTo(_appState.report.startTime) != 0 ||
           event.end.compareTo(_appState.report.endTime) != 0) {
-        _serverFacade.getMetricsForTimePeriod(event.start, event.end);
+        await _serverFacade.getMetricsForTimePeriod(event.start, event.end);
       }
       await Future.wait(
         _appState.report.metrics.keys.toList().map<Future>(
