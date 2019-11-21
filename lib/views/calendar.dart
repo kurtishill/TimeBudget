@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_budget/models/event.dart';
@@ -27,6 +29,14 @@ class _CalendarViewState extends State<CalendarView> {
   /// issue with flutter and overflowing stack widgets
   bool _canDecrement = false;
 
+  Timer _timer;
+
+  @override
+  void initState() {
+    _setTimer();
+    super.initState();
+  }
+
   @override
   void didChangeDependencies() {
     _calendarBloc = BlocProvider.of<CalendarBloc>(context);
@@ -37,6 +47,12 @@ class _CalendarViewState extends State<CalendarView> {
       ),
     );
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   Widget _buildSelectionSwitch(CalendarState state) {
@@ -311,5 +327,33 @@ class _CalendarViewState extends State<CalendarView> {
 
   void _onDateSelected(DateTime start, DateTime end) {
     _calendarBloc.add(SetNewRangeCalendarEvent(start: start, end: end));
+  }
+
+  void _updateTimeOfDayLine() {
+    setState(() {});
+    _setTimer();
+  }
+
+  void _setTimer() {
+    final now = DateTime.now();
+    final oneMinuteFromNow = DateTime.now().add(Duration(minutes: 1));
+    final startOfNextMinuteDateTime = DateTime(
+      oneMinuteFromNow.year,
+      oneMinuteFromNow.month,
+      oneMinuteFromNow.day,
+      oneMinuteFromNow.hour,
+      oneMinuteFromNow.minute,
+      0,
+    );
+    double startOfNextMinute =
+        startOfNextMinuteDateTime.difference(now).inSeconds + 0.0;
+    if (startOfNextMinute == 0.0) {
+      startOfNextMinute += 60.0;
+    }
+    print('set timer for $startOfNextMinute seconds');
+    _timer = Timer(
+      Duration(milliseconds: (startOfNextMinute * 1000).toInt()),
+      _updateTimeOfDayLine,
+    );
   }
 }
