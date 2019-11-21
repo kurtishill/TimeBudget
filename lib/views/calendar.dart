@@ -350,7 +350,7 @@ class _CalendarViewState extends State<CalendarView> {
     if (startOfNextMinute == 0.0) {
       startOfNextMinute += 60.0;
     }
-    print('set timer for $startOfNextMinute seconds');
+    print('timer set for $startOfNextMinute seconds');
     _timer = Timer(
       Duration(milliseconds: (startOfNextMinute * 1000).toInt()),
       _updateTimeOfDayLine,
