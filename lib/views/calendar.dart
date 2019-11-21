@@ -330,6 +330,7 @@ class _CalendarViewState extends State<CalendarView> {
   }
 
   void _updateTimeOfDayLine() {
+    print('update');
     setState(() {});
     _setTimer();
   }
@@ -346,8 +347,8 @@ class _CalendarViewState extends State<CalendarView> {
       0,
     );
     double startOfNextMinute =
-        startOfNextMinuteDateTime.difference(now).inSeconds + 0.0;
-    if (startOfNextMinute == 0.0) {
+        startOfNextMinuteDateTime.difference(now).inSeconds + 1.0;
+    if (startOfNextMinute == 1.0) {
       startOfNextMinute += 60.0;
     }
     print('timer set for $startOfNextMinute seconds');
