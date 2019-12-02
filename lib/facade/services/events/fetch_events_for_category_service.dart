@@ -29,17 +29,19 @@ class FetchEventsForCategoryService {
       List<Event> events = [];
 
       response.events.forEach((eventResponse) {
-        final start = DateTime(0, 0, 0, 0, 0, eventResponse.startAt);
-        final end = DateTime(0, 0, 0, 0, 0, eventResponse.endAt);
+        final start =
+            DateTime.fromMillisecondsSinceEpoch(eventResponse.startAt * 1000);
+        final end =
+            DateTime.fromMillisecondsSinceEpoch(eventResponse.endAt * 1000);
 
         final event = Event(
           id: eventResponse.eventID,
           name: eventResponse.description,
           start: eventResponse.startAt < startAt
-              ? DateTime(0, 0, 0, 0, 0, startAt)
+              ? DateTime.fromMillisecondsSinceEpoch(startAt * 1000)
               : start,
           end: eventResponse.endAt > endAt
-              ? DateTime(0, 0, 0, 0, 0, endAt)
+              ? DateTime.fromMillisecondsSinceEpoch(endAt * 1000)
               : end,
         );
 

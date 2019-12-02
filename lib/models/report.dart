@@ -23,4 +23,7 @@ class Report {
     int totalTime = events.fold(0, (t, c) => t + c.timeInSeconds);
     metrics[categoryId].amountOfTime = totalTime;
   }
+
+  DateTime get startTime => DateTime.fromMillisecondsSinceEpoch(start * 1000);
+  DateTime get endTime => DateTime.fromMillisecondsSinceEpoch(end * 1000);
 }

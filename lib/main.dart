@@ -41,13 +41,14 @@ class _TimeBudgetAppState extends State<TimeBudgetApp> {
   Widget build(BuildContext context) {
     /// Proxy factory configured to use the mock proxy throughout the app
     // ProxyFactory.configure(MockProxyFactory());
-    ProxyFactory.configure(RealProxyFactory(ip: '10.37.55.8', port: '8080'));
+    ProxyFactory.configure(RealProxyFactory(ip: '10.37.56.106', port: '8080'));
 
     return MultiBlocProvider(
       providers: [
         BlocProvider<ThemeBloc>(builder: (context) => ThemeBloc()),
         BlocProvider<MainBloc>(builder: (context) => MainBloc()),
         BlocProvider<AuthBloc>(builder: (context) => AuthBloc()),
+        BlocProvider<CalendarBloc>(builder: (context) => CalendarBloc()),
       ],
       child: BlocBuilder<ThemeBloc, ThemeData>(
         builder: (context, theme) {
